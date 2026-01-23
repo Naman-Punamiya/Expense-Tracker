@@ -1,177 +1,57 @@
-<!DOCTYPE html>
+{%load static%}
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Expenses</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Expenses</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}" />
+  </head>
 
-<style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #0e0e0e;
-}
-
-.container {
-  display: flex;
-  height: 100vh;
-}
-
-
-.sidebar {
-  width: 240px;
-  background: #383434;
-  color: rgb(200, 214, 235);
-  padding: 20px;
-}
-
-.sidebar h2 { margin-bottom: 30px; }
-
-.sidebar a {
-  display: block;
-  color: #31aec4;
-  text-decoration: none;
-  margin: 15px 0;
-  font-size: 15px;
-}
-
-.sidebar a:hover {
-  color: rgb(144, 207, 132);
-}
-
-
-.main {
-  flex: 1;
-  padding: 30px;
-  background: #0f0f0f;
-  color: #fff;
-}
-
-
-.expense-card {
-  background: #151515;
-  padding: 25px;
-  border-radius: 12px;
-}
-
-.expense-card h1 {
-  margin-bottom: 20px;
-}
-
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 15px;
-}
-
-.header button {
-  padding: 10px 18px;
-  border: none;
-  border-radius: 8px;
-  background: #00e5ff;
-  color: #000;
-  cursor: pointer;
-}
-
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-th {
-  text-align: left;
-  font-size: 13px;
-  color: #aaa;
-  padding: 12px 8px;
-}
-
-td {
-  padding: 14px 8px;
-  border-top: 1px solid #333;
-  font-size: 14px;
-}
-
-tr:hover {
-  background: #1c1c1c;
-}
-
-.checkbox {
-  width: 16px;
-  height: 16px;
-}
-
-
-.status {
-  padding: 5px 12px;
-  border-radius: 20px;
-  font-size: 12px;
-}
-
-.not-submitted {
-  background: #4b1836;
-  color: #ff4da6;
-}
-
-.submitted {
-  background: #3b1b6f;
-  color: #b983ff;
-}
-</style>
-</head>
-
-<body>
-<div class="container">
-
- 
-  <div class="sidebar">
-    <h2>XYZ</h2>
-    <a href="index.html">Home</a>
-    <a href="expenses.html">Expenses</a>
-    <a href="#">Investment</a>
-    <a href="#">Settings</a>
-  </div>
-
-
-  <div class="main">
-    <div class="expense-card">
-
-      <div class="header">
-        <h1>Investment</h1>
-        <button>+ New Investment</button>
+  <body>
+    <div class="container">
+      <div class="sidebar">
+        <h2>XYZ</h2>
+        <a href="{% url 'home'%}">Home</a>
+        <a href="{% url 'expenses'%}">Expenses</a>
+        <a href="{% url 'investment'%}">Investment</a>
+        <a href="{% url 'settings'%}">Settings</a>
       </div>
 
-      <table>
-        <tr>
-          <th>DETAILS</th>
-          <th>MERCHANT</th>
-          <th>AMOUNT</th>
-          <th>REPORT</th>
-          <th>STATUS</th>
-        </tr>
+      <div class="main">
+        <div class="expense-card">
+          <div class="header">
+            <h1>Investment</h1>
+            <button>+ New Investment</button>
+          </div>
 
-        <tr>
-          <td>ABC</td>
-          <td>EFG</td>
-          <td>XXXX</td>
-          <td>PQR</td>
-          <td><span class="status not-submitted">Not Submitted</span></td>
-        </tr>
+          <table>
+            <tr>
+              <th>DETAILS</th>
+              <th>MERCHANT</th>
+              <th>AMOUNT</th>
+              <th>REPORT</th>
+              <th>STATUS</th>
+            </tr>
 
-        <tr>
-          <td>LMN</td>
-          <td>SUV</td>
-          <td>XXXX</td>
-          <td>WXY</td>
-          <td><span class="status submitted">Submitted</span></td>
-        </tr>
-      </table>
+            <tr>
+              <td>ABC</td>
+              <td>EFG</td>
+              <td>XXXX</td>
+              <td>PQR</td>
+              <td><span class="status not-submitted">Not Submitted</span></td>
+            </tr>
 
+            <tr>
+              <td>LMN</td>
+              <td>SUV</td>
+              <td>XXXX</td>
+              <td>WXY</td>
+              <td><span class="status submitted">Submitted</span></td>
+            </tr>
+          </table>
+        </div>
+      </div>
     </div>
-  </div>
-
-</div>
-</body>
+  </body>
 </html>

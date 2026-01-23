@@ -15,9 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from expenseTracker.views import home
+import expenseTracker.views as views
 # from views import home
 urlpatterns = [
-    path('',home,name="home"),
+    path('',views.home,name="home"),
     path('admin/', admin.site.urls),
+    path('expenses/', views.expenses,name="expenses"),
+    path('investment/', views.investment,name="investment"),
+    path('settings/', views.settings,name="settings"),
+    path('newExpenses/', views.newExpenses,name="newExpenses"),
 ]
