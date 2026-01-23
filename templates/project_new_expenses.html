@@ -22,35 +22,34 @@
         <div class="expense-card">
           <h1>New Expense</h1>
 
-          <div class="expense-body">
-            <div class="form">
-              <label>Subject</label>
-              <input type="text" />
 
-              <label>Merchant</label>
-              <input type="text" />
-
-              <label>Date</label>
-              <input type="text" />
-
-              <label>Total</label>
-              <div class="row">
-                <input type="number" />
-                <select>
-                  <option>INR</option>
-                  <option>USD</option>
-                </select>
-              </div>
-
-              <label>Description</label>
-              <textarea rows="4"></textarea>
-
-              <div class="actions">
-                <button class="draft">Save Draft</button>
-                <button class="save">Save</button>
-              </div>
+          <form method = "POST">
+            {% csrf_token %}
+            <label>Subject</label>
+            <input type="text" name="name" required/>
+            
+            <label>Merchant</label>
+            <input type="text" name="merchant" required/>
+  
+            <label>Date</label>
+            <input type="text" name="date" required/>
+            
+            <label>Total</label>
+            <div class="row">
+              <input type = "number" step="0.01" name="amount" required/>
+              <select name = "currency">
+                <option value = "INR">INR</option>
+                <option value = "USD">USD</option>
+              </select>
             </div>
-          </div>
+
+            <label>Description</label>
+            <textarea rows="4" name="description"></textarea>
+
+            <div class="actions">
+              <button type="submit" class="save">Save</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
