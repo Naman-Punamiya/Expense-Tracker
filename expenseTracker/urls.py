@@ -20,4 +20,7 @@ import expenseTracker.views as views
 urlpatterns = [
     path('',views.home,name="home"),
     path('admin/', admin.site.urls),
+    path('investment/', views.investment, name='investment'),
+    path('settings/', views.settings, name='settings'),
+    path('expenses/', include('expenses.urls')),
 ]

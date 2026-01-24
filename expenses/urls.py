@@ -1,11 +1,7 @@
 from django.urls import path
-
-from expenseTracker import views
-from .views import add_expenses
+from . import views
 
 urlpatterns = [
-    path('/newExpenses',add_expenses,name='expenses'),
-    path('expenses/', views.expenses,name="expenses"),
-    path('investment/', views.investment,name="investment"),
-    path('settings/', views.settings,name="settings"),
+    path('',views.expenses,name='expenses'),
+    path('new_expense/', views.add_expenses,name="add_expenses"),
 ]

@@ -1,5 +1,5 @@
 {%load static%}
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -32,33 +32,25 @@
             </thead>
 
             <tbody>
+              {%for expense in expenses%}
               <tr>
-                <td>ABC</td>
-                <td><span class="badge travel">Travel</span></td>
-                <td>XXXX</td>
-                <td>Once</td>
-              </tr>
+                <td>{{ expense.expenseName }}</td>
 
-              <tr>
-                <td>PQR</td>
-                <td><span class="badge travel">Travel</span></td>
-                <td>XXXX</td>
-                <td>Once</td>
-              </tr>
+                <td>
+                  <span class="badge {{ expense.category|lower }}">
+                    {{ expense.category }}
+                  </span>
+                </td>
 
-              <tr>
-                <td>LMN</td>
-                <td><span class="badge food">Food</span></td>
-                <td>XXXX</td>
-                <td>Monthly</td>
-              </tr>
+                <td>{{ expense.amount }} {{ expense.currency }}</td>
 
-              <tr>
-                <td>EFG</td>
-                <td><span class="badge software">Software</span></td>
-                <td>XXXX</td>
-                <td>Bi-Monthly</td>
+                <td>{{ expense.frequency }}</td>
               </tr>
+              {% empty %}
+              <tr>
+                <td colspan="4">No expenses added yet</td>
+              </tr>
+              {% endfor %}
             </tbody>
           </table>
         </div>
