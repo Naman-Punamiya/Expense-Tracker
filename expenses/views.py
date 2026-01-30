@@ -1,10 +1,11 @@
 from django.shortcuts import render,redirect
-from .models import Expense
+from .models import Categories, Expense
 
 def add_expenses(request):
     if request.method == "POST":
         Expense.objects.create(
             expenseName = request.POST.get('name'),
+            category = request.POST.get('category'),
             date = request.POST.get('date'),
             amount = request.POST.get('amount'),
             currency = request.POST.get('currency'),
@@ -12,7 +13,9 @@ def add_expenses(request):
         )
         return redirect('expenses')
     
-    return render(request,"project_new_expenses.html")
+    return render(request,"project_new_expenses.html",{
+        'categories': Categories
+    })
 
 def expenses(request):
     all_expenses = Expense.objects.all().order_by('-date')

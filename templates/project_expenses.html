@@ -20,14 +20,14 @@
       <div class="main">
         <div class="expense-card">
           <h1>Expenses</h1>
-
+          <a href="{% url 'add_expenses'%}" class="btn">New Expense</a><br>
           <table>
             <thead>
               <tr>
                 <th>Owner</th>
                 <th>Category</th>
                 <th>Amount</th>
-                <th>Frequency</th>
+                <th>Date</th>
               </tr>
             </thead>
 
@@ -44,7 +44,7 @@
 
                 <td>{{ expense.amount }} {{ expense.currency }}</td>
 
-                <td>{{ expense.frequency }}</td>
+                <td>{{ expense.date }}</td>
               </tr>
               {% empty %}
               <tr>
