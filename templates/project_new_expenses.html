@@ -1,4 +1,4 @@
-{%load static%}
+{% load static %}
 <!doctype html>
 <html lang="en">
   <head>
@@ -8,8 +8,10 @@
     <link rel="stylesheet" href="{% static 'style.css' %}" />
   </head>
 
-  <body>
+  <body class="new-expense-page">
     <div class="container">
+      
+      <!-- Sidebar -->
       <div class="sidebar">
         <h2>XYZ</h2>
         <a href="{% url 'home'%}">Home</a>
@@ -18,34 +20,36 @@
         <a href="{% url 'settings'%}">Settings</a>
       </div>
 
+      <!-- Main content -->
       <div class="main">
         <div class="expense-card">
           <h1>New Expense</h1>
 
-
-          <form method = "POST" class="form">
+          <form method="POST" class="form">
             {% csrf_token %}
+
             <label>Subject</label>
             <input type="text" name="name" required/>
-            
-            <select name = "category">
-              {% for value ,label in categories %}
-                <option value = "{{ value }}">{{ label }}</option>
+
+            <label>Category</label>
+            <select name="category">
+              {% for value, label in categories %}
+                <option value="{{ value }}">{{ label }}</option>
               {% endfor %}
             </select>
 
             <label>Merchant</label>
             <input type="text" name="merchant" required/>
-  
+
             <label>Date</label>
             <input type="text" name="date" required/>
-            
+
             <label>Total</label>
             <div class="row">
-              <input type = "number" step="0.01" name="amount" required/>
-              <select name = "currency">
-                <option value = "INR">INR</option>
-                <option value = "USD">USD</option>
+              <input type="number" step="0.01" name="amount" required/>
+              <select name="currency">
+                <option value="INR">INR</option>
+                <option value="USD">USD</option>
               </select>
             </div>
 
@@ -53,11 +57,13 @@
             <textarea rows="4" name="description"></textarea>
 
             <div class="actions">
-              <button type="submit" class="save">Save</button>
+              <button type="submit" class="btn primary">Save</button>
+              <button type="button" class="btn secondary">Save Draft</button>
             </div>
           </form>
         </div>
       </div>
+
     </div>
   </body>
 </html>
