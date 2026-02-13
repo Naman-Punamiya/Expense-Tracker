@@ -1,5 +1,6 @@
-{%load static%}
+{% load static %}
 <!doctype html>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,52 +8,56 @@
     <link rel="stylesheet" href="{% static 'style.css' %}" />
   </head>
 
-  <body>
+  <body class="settings-page">
     <div class="container">
+
+      <!-- Sidebar -->
       <div class="sidebar">
         <h2>XYZ</h2>
-        <a href="{% url 'home'%}">Home</a>
-        <a href="{% url 'expenses'%}">Expenses</a>
-        <a href="{% url 'investment'%}">Investment</a>
-        <a href="{% url 'settings'%}">Settings</a>
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'expenses' %}">Expenses</a>
+        <a href="{% url 'investment' %}">Investment</a>
+        <a href="{% url 'settings' %}" class="active">Settings</a>
       </div>
 
+      <!-- Main content -->
       <div class="main">
         <div class="expense-card">
           <div class="header">
             <h1>Settings</h1>
           </div>
 
-          <!-- Settings Content -->
           <div class="form">
             <label>Full Name</label>
-            <input type="text" placeholder="Enter your name" />
+            <input type="text" name="full_name" placeholder="Enter your name" />
 
             <label>Email</label>
-            <input type="email" placeholder="Enter your email" />
+            <input type="email" name="email" placeholder="Enter your email" />
 
             <label>Password</label>
-            <input type="password" placeholder="Enter new password" />
+            <input type="password" name="password" placeholder="Enter new password" />
 
             <label>Currency</label>
-            <select>
-              <option>INR</option>
-              <option>USD</option>
-              <option>EUR</option>
+            <select name="currency">
+              <option value="INR">INR</option>
+              <option value="USD">USD</option>
+              <option value="EUR">EUR</option>
             </select>
 
             <label>Notifications</label>
-            <select>
-              <option>Enable</option>
-              <option>Disable</option>
+            <select name="notifications">
+              <option value="enable">Enable</option>
+              <option value="disable">Disable</option>
             </select>
 
             <div class="actions">
-              <button>Save Changes</button>
+              <button type="submit" class="btn primary">Save Changes</button>
             </div>
           </div>
+
         </div>
       </div>
+
     </div>
   </body>
 </html>

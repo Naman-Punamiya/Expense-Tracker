@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>New Investment</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<div class="dashboard">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="logo">XYZ</div>
+    <nav class="menu">
+      <a href="project_homepage1.html">Home</a>
+      <a href="project_expenses.html">Expenses</a>
+      <a href="project_investment.html" class="active">Investment</a>
+      <a href="project_setting.html">Settings</a>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="main">
+
+    <div class="table-card new-investment-card">
+
+      <div class="header">
+        <h1>New Investment</h1>
+      </div>
+
+      <div class="form">
+
+        <label for="details">Details</label>
+        <input type="text" id="details" placeholder="Enter investment details">
+
+        <label for="merchant">Merchant / Platform</label>
+        <input type="text" id="merchant" placeholder="Enter merchant or platform">
+
+        <label for="date">Date</label>
+        <input type="date" id="date">
+
+        <label>Amount</label>
+        <div class="row">
+          <input type="number" placeholder="Enter amount">
+          <select>
+            <option>INR</option>
+            <option>USD</option>
+            <option>EUR</option>
+          </select>
+        </div>
+
+        <label for="description">Description</label>
+        <textarea id="description" rows="4" placeholder="Enter additional notes"></textarea>
+
+        <!-- Buttons moved here -->
+        <div class="actions">
+          <button class="btn draft">Save Draft</button>
+          <button class="btn save">Save</button>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
+
