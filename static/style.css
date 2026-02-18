@@ -920,3 +920,100 @@ tbody tr:hover {
 .investment-page tbody tr:hover {
   background: #f9fbfb;
 }
+
+
+
+/* ==============================
+   FORCE INVESTMENT FORM = EXPENSE UI
+   (NO CARD, NO WHITE BOX)
+============================== */
+
+.investment-page .new-investment-card {
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* Remove card look */
+.investment-page .table-card,
+.investment-page .new-investment-card {
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
+/* Form layout same as expense */
+.investment-page .form {
+  max-width: 100%;
+}
+
+.investment-page label {
+  display: block;
+  margin: 18px 0 6px;
+  font-size: 14px;
+  color: #666;
+}
+
+.investment-page input,
+.investment-page select,
+.investment-page textarea {
+  width: 100%;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background: #fff;
+  font-size: 14px;
+}
+
+/* Amount row same as expense */
+.investment-page .row {
+  display: flex;
+  gap: 15px;
+}
+
+.investment-page .row input {
+  flex: 2;
+}
+
+.investment-page .row select {
+  flex: 1;
+}
+
+/* Buttons same as expense */
+.investment-page .actions {
+  margin-top: 20px;
+  display: flex;
+  gap: 12px;
+}
+
+.investment-page .btn.save {
+  background: #3aa18c;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.investment-page .btn.draft {
+  background: transparent;
+  border: 2px solid #000;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Mobile */
+@media (max-width: 900px) {
+  .investment-page .actions {
+    flex-direction: column;
+  }
+
+  .investment-page .actions button {
+    width: 100%;
+  }
+}
