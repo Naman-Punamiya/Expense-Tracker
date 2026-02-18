@@ -1,10 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Register - XYZ Dashboard</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - XYZ Dashboard</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
 </head>
 <body class="auth-page">
 
@@ -17,7 +18,7 @@
         <button type="submit" class="btn">Register</button>
     </form>
     <div class="form-footer">
-        Already have an account? <a href="login.html">Login</a>
+        Already have an account? <a href="{% url 'login' %}">Login</a>
     </div>
 </div>
 

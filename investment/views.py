@@ -16,7 +16,7 @@ def add_investment(request):
     return render(request,"project_new_investment.html")
 
 def investment(request):
-    all_investment = Investment.object.all().order_by('-date')
+    all_investment = Investment.objects.all().order_by('-date')
     return render(request,'project_investment.html',{'investments' : all_investment})
 
 def newInvestment(request):

@@ -347,12 +347,6 @@ tbody tr:hover {
    INVESTMENT PAGE EXTRA STYLES
 ============================== */
 
-.investment-page {
-  display: flex;
-  min-height: 100vh;
-  background-color: #f4f7f6;
-}
-
 /* Sidebar and main inside Investment page only */
 .investment-page .sidebar {
   width: 230px;
@@ -881,4 +875,48 @@ tbody tr:hover {
   .auth-card {
       padding: 30px 20px;
   }
+}
+
+/* ==============================
+   INVESTMENT PAGE LAYOUT FIX
+============================== */
+.investment-page .container {
+  display: flex;          /* 🔥 this fixes it */
+  min-height: 100vh;
+}
+
+/* =========================f
+   INVESTMENT MATCH EXPENSE UI
+========================= */
+
+.investment-page .expense-card {
+  background: #fff;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  margin-top: 20px;
+}
+
+.investment-page table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.investment-page thead {
+  background: #f1f5f4;
+}
+
+.investment-page th,
+.investment-page td {
+  padding: 12px;
+  text-align: left;
+  font-size: 14px;
+}
+
+.investment-page tbody tr {
+  border-bottom: 1px solid #eee;
+}
+
+.investment-page tbody tr:hover {
+  background: #f9fbfb;
 }
