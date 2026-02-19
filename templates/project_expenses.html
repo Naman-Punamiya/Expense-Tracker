@@ -1,232 +1,154 @@
-<<<<<<< HEAD
-{%load static%}
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Approvals</title>
-    <link rel="stylesheet" href="{% static 'style.css' %}" />
-  </head>
-  <body>
-    <div class="ExpensePage">
-      <div class="sidebar">
-        <h2 class = "logo">XYZ</h2>
-        <nav class = "menu">
-          <a href="{% url 'home'%}">Home</a>
-          <a href="{% url 'expenses'%}">Expenses</a>
-          <a href="{% url 'investment'%}">Investment</a>
-          <a href="{% url 'settings'%}">Settings</a>
-        </nav>
-      </div>
-
-      <div class="main">
-        <div class="header-actions">
-          <h1>Expenses</h1>
-          <div class="buttons">
-            <a href="{% url 'add_expenses'%}" class="btn btn-primary">+ New Expense</a>
-            <a class="btn btn-secondary">+ New Investment</a>
-        </div>
-      </div>
-          <div class="cards">
-            <div class="card">
-                <h3>Total Expenses</h3>
-                <p>$78,000</p>
-            </div>
-            <div class="card">
-                <h3>This Month</h3>
-                <p>$6,500</p>
-            </div>
-            <div class="card">
-                <h3>Recurring</h3>
-                <p>$2,100</p>
-            </div>
-          </div>
-          <div class="table-header">
-                <h2>Transaction History</h2>
-            </div>
-          <table>
-            <thead>
-              <tr>
-                <th>Owner</th>
-                <th>Category</th>
-                <th>Amount</th>
-                <th>Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {%for expense in expenses%}
-              <tr>
-                <td>{{ expense.expenseName }}</td>
-                <td>
-                  <span class="badge {{ expense.category|lower }}">
-                    {{ expense.category }}
-                  </span>
-                </td>
-                <td>{{ expense.amount }} {{ expense.currency }}</td>
-                <td>{{ expense.date }}</td>
-              </tr>
-              {% empty %}
-              <tr>
-                <td colspan="4">No expenses added yet</td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
-
-        </div>
-        </div>
-    </div>
-  </body>
-</html>
-=======
 {% load static %}
 {% load humanize %}
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Expenses</title>
-    <link rel="stylesheet" href="{% static 'style.css' %}" />
-  </head>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
 
-  <body>
-    <div class="ExpensePage">
-      <!-- Sidebar -->
-      <div class="sidebar">
+<body>
+<div class="ExpensePage">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
         <h2 class="logo">XYZ</h2>
         <nav class="menu">
-          <a href="{% url 'home' %}">Home</a>
-          <a href="{% url 'expenses' %}" class="active">Expenses</a>
-          <a href="{% url 'investment' %}">Investment</a>
-          <a href="{% url 'settings' %}">Settings</a>
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'expenses' %}" class="active">Expenses</a>
+            <a href="{% url 'investment' %}">Investment</a>
+            <a href="{% url 'settings' %}">Settings</a>
         </nav>
-      </div>
+    </div>
 
-      <!-- Main Content -->
-      <div class="main">
+    <!-- Main -->
+    <div class="main">
+
         <!-- Header -->
         <div class="header-actions">
-          <h1>Expenses</h1>
-          <div class="buttons">
-            <a href="{% url 'add_expenses' %}" class="btn btn-primary">
-              + New Expense
-            </a>
-          </div>
+            <h1>Expenses</h1>
+            <div class="buttons">
+                <a href="{% url 'add_expenses' %}"
+                   class="btn btn-primary">
+                   + New Expense
+                </a>
+            </div>
         </div>
 
-        <!-- Summary Cards -->
+        <!-- Summary -->
         <div class="cards">
-          <div class="card">
-            <h3>Total Expenses</h3>
-            <p>₹ {{ total_expenses|intcomma }}</p>
-          </div>
-          <div class="card">
-            <h3>This Month</h3>
-            <p>₹ {{ monthly_expenses|intcomma }}</p>
-          </div>
+            <div class="card">
+                <h3>Total Expenses</h3>
+                <p>₹ {{ total_expenses|intcomma }}</p>
+            </div>
+
+            <div class="card">
+                <h3>This Month</h3>
+                <p>₹ {{ monthly_expenses|intcomma }}</p>
+            </div>
         </div>
 
         <!-- Table -->
         <div class="table-wrapper">
-          <h2>Transaction History</h2>
+            <h2>Transaction History</h2>
 
-          <table>
-            <thead>
-              <tr>
-                <th>Owner</th>
-                <th>Category</th>
-                <th>Amount</th>
-                <th>Date</th>
-              </tr>
-            </thead>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Owner</th>
+                        <th>Category</th>
+                        <th>Amount</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
 
-            <tbody>
-              {% for expense in expenses %}
-              <tr>
-                <!-- Clickable Title -->
-                <td>
-                  <span class="expense-title" data-id="{{ expense.id }}">
-                    {{ expense.expenseName }}
-                  </span>
-                </td>
+                <tbody>
+                {% for expense in expenses %}
+                    <tr>
+                        <td>
+                            <span class="expense-title"
+                                  data-id="{{ expense.id }}">
+                                {{ expense.expenseName }}
+                            </span>
+                        </td>
 
-                <td>
-                  <span class="badge {{ expense.category|lower }}">
-                    {{ expense.category }}
-                  </span>
-                </td>
+                        <td>
+                            <span class="badge {{ expense.category|lower }}">
+                                {{ expense.category }}
+                            </span>
+                        </td>
 
-                <td>{{ expense.amount }} {{ expense.currency }}</td>
-                <td>{{ expense.date }}</td>
-              </tr>
-              {% empty %}
-              <tr>
-                <td colspan="4">No expenses added yet</td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
+                        <td>
+                            {{ expense.amount }} {{ expense.currency }}
+                        </td>
+
+                        <td>
+                            {{ expense.date|date:"d M Y" }}
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="4">No expenses added yet</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
         </div>
-      </div>
-    </div>
 
-    <!-- Modal -->
-    <div id="expenseModal" class="modal">
-      <div class="modal-content">
-        <span class="close" onclick="closeModal()">×</span>
+    </div>
+</div>
+
+<!-- Modal -->
+<div id="expenseModal" class="modal">
+    <div class="modal-content">
+        <span class="close">×</span>
 
         <h3>Expense Options</h3>
 
         <div class="modal-actions">
-          <a id="editLink" class="btn btn-primary modal-btn"> Edit </a>
+            <a id="editLink"
+               class="btn btn-primary modal-btn">Edit</a>
 
-          <form id="deleteForm" method="POST">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-secondary modal-btn">
-              Delete
-            </button>
-          </form>
+            <form id="deleteForm" method="POST">
+                {% csrf_token %}
+                <button type="submit"
+                        class="btn btn-secondary modal-btn">
+                    Delete
+                </button>
+            </form>
         </div>
-      </div>
     </div>
+</div>
 
-    <!-- Script -->
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const modal = document.getElementById("expenseModal");
-        const editLink = document.getElementById("editLink");
-        const deleteForm = document.getElementById("deleteForm");
+<!-- Script -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
 
-        // Attach click event to all expense titles
-        document.querySelectorAll(".expense-title").forEach((item) => {
-          item.addEventListener("click", function () {
+    const modal = document.getElementById("expenseModal");
+    const editLink = document.getElementById("editLink");
+    const deleteForm = document.getElementById("deleteForm");
+
+    document.querySelectorAll(".expense-title").forEach(item => {
+        item.addEventListener("click", function () {
+
             const id = this.dataset.id;
-
-            console.log("Clicked ID:", id); // Debug check
-
             modal.style.display = "flex";
 
             editLink.href = `/expenses/expense/${id}/edit/`;
             deleteForm.action = `/expenses/expense/${id}/delete/`;
-          });
         });
+    });
 
-        // Close button
-        document.querySelector(".close").addEventListener("click", function () {
-          modal.style.display = "none";
-        });
+    document.querySelector(".close").onclick =
+        () => modal.style.display = "none";
 
-        // Click outside modal
-        window.addEventListener("click", function (event) {
-          if (event.target === modal) {
+    window.onclick = (e) => {
+        if (e.target === modal)
             modal.style.display = "none";
-          }
-        });
-      });
-    </script>
-  </body>
+    };
+});
+</script>
+</body>
 </html>
->>>>>>> origin/naman

@@ -1,139 +1,110 @@
 {% load static %}
 <!doctype html>
 <html lang="en">
-<<<<<<< HEAD
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>New Investment</title>
-  <link rel="stylesheet" href="{% static 'style.css' %}" />
+    <meta charset="UTF-8">
+    <title>New Investment</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
 </head>
 
-<body class="investment-page">
-  <div class="container">
+<body>
+
+<div class="ExpensePage">
 
     <!-- Sidebar -->
     <div class="sidebar">
-      <h2>XYZ</h2>
-      <a href="{% url 'home'%}">Home</a>
-      <a href="{% url 'expenses'%}">Expenses</a>
-      <a href="{% url 'investment'%}" class="active">Investment</a>
-      <a href="{% url 'settings'%}">Settings</a>
+        <h2 class="logo">XYZ</h2>
+
+        <nav class="menu">
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'expenses' %}">Expenses</a>
+            <a href="{% url 'investment' %}" class="active">
+                Investment
+            </a>
+            <a href="{% url 'settings' %}">Settings</a>
+        </nav>
     </div>
 
-    <!-- Main content -->
+
+    <!-- Main -->
     <div class="main">
 
-      <h1>New Investment</h1>
+        <div class="table-card new-investment-card">
 
-      <form method="post" action="{% url 'add_investment' %}" class="form">
-        {% csrf_token %}
+            <div class="header">
+                <h1>New Investment</h1>
+            </div>
 
-        <label>Details</label>
-        <input type="text" name="name"  required>
+            <!-- ✅ FORM START -->
+            <form method="POST">
 
-        <label>Merchant / Platform</label>
-        <input type="text" name="merchant" >
+                {% csrf_token %}
 
-        <label>Date</label>
-        <input type="date" name="date" required>
+                <div class="form">
 
-        <label>Amount</label>
-        <div class="row">
-          <input type="number" step="0.01" name="amount" required>
-          <select name="currency">
-            <option value="INR">INR</option>
-            <option value="USD">USD</option>
-            <option value="EUR">EUR</option>
-          </select>
+                    <label>Investment Name</label>
+                    <input type="text"
+                           name="name"
+                           placeholder="Enter investment name"
+                           required>
+
+
+                    <label>Date</label>
+                    <input type="date"
+                           name="date"
+                           required>
+
+
+                    <label>Amount</label>
+                    <div class="row">
+
+                        <input type="number"
+                               step="0.01"
+                               name="amount"
+                               placeholder="Enter amount"
+                               required>
+
+                        <select name="currency">
+                            <option value="INR">INR</option>
+                            <option value="USD">USD</option>
+                            <option value="EUR">EUR</option>
+                        </select>
+
+                    </div>
+
+
+                    <label>Description</label>
+                    <textarea name="description"
+                              rows="4"
+                              placeholder="Enter notes"></textarea>
+
+
+                    <!-- Buttons -->
+                    <div class="actions">
+
+                        <a href="{% url 'investment' %}"
+                           class="btn btn-secondary">
+                           Cancel
+                        </a>
+
+                        <button type="submit"
+                                class="btn btn-primary">
+                            Save Investment
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </form>
+            <!-- ✅ FORM END -->
+
         </div>
-
-        <label>Description</label>
-        <textarea name="description" rows="4"></textarea>
-
-        <div class="actions">
-          <button type="submit" class="btn save">Save</button>
-          <button type="reset" class="btn draft">Save Draft</button>
-        </div>
-
-      </form>
 
     </div>
-  </div>
+
+</div>
+
 </body>
 </html>
-=======
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>New Investment</title>
-    <link rel="stylesheet" href="{% static 'style.css' %}" />
-  </head>
-
-  <body>
-    <div class="ExpensePage">
-      <!-- Sidebar -->
-      <div class="sidebar">
-        <h2 class="logo">XYZ</h2>
-        <nav class="menu">
-          <a href="{% url 'home' %}">Home</a>
-          <a href="{% url 'expenses' %}">Expenses</a>
-          <a href="{% url 'investment' %}">Investment</a>
-          <a href="{% url 'settings' %}">Settings</a>
-        </nav>
-      </div>
-
-      <!-- Main Content -->
-      <div class="main">
-        <div class="table-card new-investment-card">
-          <div class="header">
-            <h1>New Investment</h1>
-          </div>
-
-          <div class="form">
-            <label for="details">Details</label>
-            <input
-              type="text"
-              id="details"
-              placeholder="Enter investment details"
-            />
-
-            <label for="merchant">Merchant / Platform</label>
-            <input
-              type="text"
-              id="merchant"
-              placeholder="Enter merchant or platform"
-            />
-
-            <label for="date">Date</label>
-            <input type="date" id="date" />
-
-            <label>Amount</label>
-            <div class="row">
-              <input type="number" placeholder="Enter amount" />
-              <select>
-                <option>INR</option>
-                <option>USD</option>
-                <option>EUR</option>
-              </select>
-            </div>
-
-            <label for="description">Description</label>
-            <textarea
-              id="description"
-              rows="4"
-              placeholder="Enter additional notes"
-            ></textarea>
-
-            <!-- Buttons moved here -->
-            <div class="actions">
-              <button class="btn btn-secondary">Save Draft</button>
-              <button class="btn btn-primary">Save</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </body>
-</html>
->>>>>>> origin/naman

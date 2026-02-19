@@ -1,321 +1,284 @@
-<<<<<<< HEAD
 {% load static %}
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Home</title>
-    <link rel="stylesheet" href="{% static 'style.css' %}" />
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  </head>
 
-  <body class="home-page">
-    <div class="container">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
 
-      <!-- Sidebar -->
-      <div class="sidebar">
-        <h2>XYZ</h2>
-        <a href="{% url 'home'%}" class="active">Home</a>
-        <a href="{% url 'expenses'%}">Expenses</a>
-        <a href="{% url 'investment'%}">Investment</a>
-        <a href="{% url 'settings'%}">Settings</a>
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body class="home-page">
+
+  <div class="container">
+
+    <!-- ================= SIDEBAR ================= -->
+    <div class="sidebar">
+      <h2>XYZ</h2>
+
+      <a href="{% url 'home' %}" class="active">Home</a>
+      <a href="{% url 'expenses' %}">Expenses</a>
+      <a href="{% url 'investment' %}">Investment</a>
+      <a href="{% url 'settings' %}">Settings</a>
+    </div>
+
+
+    <!-- ================= MAIN ================= -->
+    <div class="main">
+
+      <!-- Header -->
+      <div class="header">
+        <h1>Dashboard</h1>
+
+        <div class="header-actions">
+          <a href="{% url 'add_expenses' %}" class="btn primary">
+            + New Expense
+          </a>
+
+          <a href="{% url 'add_investment' %}" class="btn secondary">
+            + New Investment
+          </a>
+        </div>
       </div>
 
-      <!-- Main content -->
-      <div class="main">
 
-        <!-- Header -->
-        <div class="header">
-          <h1>Dashboard</h1>
-          <div class="header-actions">
-            <a href="{% url 'add_expenses' %}" class="btn primary">+ New Expense</a>
-            <a href="{% url 'add_investment' %}" class="btn secondary">+ New Investment</a>
+      <!-- ================= CHART CARDS ================= -->
+      <div class="cards">
+
+        <!-- Expenses Chart -->
+        <div class="card">
+          <h3>Expenses Distribution</h3>
+
+          <div class="chart-row">
+            <div class="chart-container">
+              <canvas id="expensesChart"></canvas>
+            </div>
+
+            <div id="expensesLegend" class="chart-legend"></div>
           </div>
         </div>
 
-        <!-- Top Cards / Charts -->
-        <div class="cards">
-          <div class="card">
-            <h3>Expenses Distribution</h3>
-            <canvas id="expensesChart"></canvas>
-          </div>
 
-          <div class="card">
-            <h3>Investments Distribution</h3>
+        <!-- Investment Chart -->
+        <div class="card">
+          <h3>Investments Distribution</h3>
+
+          <div class="chart-container">
             <canvas id="investmentChart"></canvas>
           </div>
-
-          <div class="card">
-            <h3>Calendar</h3>
-            <input type="date" />
-          </div>
         </div>
 
-        <!-- Recent Tables -->
-        <div class="bottom-tables">
-          <div class="table-card">
-            <h2>Recent Expenses</h2>
-            <table>
-              <thead>
-                <tr>
-                  <th>Owner</th>
-                  <th>Category</th>
-                  <th>Amount</th>
-                  <th>Date</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for expense in recent_expenses %}
-                <tr>
-                  <td>{{ expense.owner }}</td>
-                  <td>{{ expense.category }}</td>
-                  <td>{{ expense.amount }}</td>
-                  <td>{{ expense.date }}</td>
-                </tr>
-                {% empty %}
-                <tr><td colspan="4">No recent expenses</td></tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
 
-          <div class="table-card">
-            <h2>Recent Investments</h2>
-            <table>
-              <thead>
-                <tr>
-                  <th>Owner</th>
-                  <th>Details</th>
-                  <th>Amount</th>
-                  <th>Date</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for inv in recent_investments %}
-                <tr>
-                  <td>{{ inv.owner }}</td>
-                  <td>{{ inv.details }}</td>
-                  <td>{{ inv.amount }}</td>
-                  <td>{{ inv.date }}</td>
-                </tr>
-                {% empty %}
-                <tr><td colspan="4">No recent investments</td></tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
+        <!-- Calendar -->
+        <div class="card">
+          <h3>Calendar</h3>
+          <input type="date">
         </div>
 
       </div>
+
+
+      <!-- ================= TABLES ================= -->
+      <div class="bottom-tables">
+
+        <!-- Recent Expenses -->
+        <div class="table-card">
+          <h2>Recent Expenses</h2>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Amount</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {% for expense in recent_expenses %}
+              <tr>
+                <td>
+                  {{ expense.expenseName }}
+                </td>
+
+                <td>{{ expense.category }}</td>
+
+                <td>
+                  {{ expense.amount }}
+                  {{ expense.currency }}
+                </td>
+
+                <td>
+                  {{ expense.date|date:"d M Y" }}
+                </td>
+              </tr>
+              {% empty %}
+              <tr>
+                <td colspan="4">
+                  No recent expenses
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+
+        <!-- Recent Investments -->
+        <div class="table-card">
+          <h2>Recent Investments</h2>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Amount</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {% for inv in recent_investments %}
+              <tr>
+                <td>{{ inv.investmentName }}</td>
+                <td>{{ inv.description }}</td>
+                <td>
+                  {{ inv.amount }}
+                  {{ inv.currency }}
+                </td>
+                <td>
+                  {{ inv.date|date:"d M Y" }}
+                </td>
+              </tr>
+              {% empty %}
+              <tr>
+                <td colspan="4">
+                  No recent investments
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+
+          </table>
+        </div>
+
+      </div>
+
     </div>
+  </div>
 
-    <!-- Chart.js scripts -->
-    <!-- <script>
-      const expensesData = {
-        labels: {{ expenses_labels|safe }},
-        datasets: [{
-          label: 'Expenses',
-          data: {{ expenses_data|safe }},
-          backgroundColor: ['#3aa18c', '#f4a261', '#6c63ff', '#e76f51'],
-        }]
-      };
 
-      const investmentsData = {
-        labels: {{ investments_labels|safe }},
-        datasets: [{
-          label: 'Investments',
-          data: {{ investments_data|safe }},
-          backgroundColor: ['#3aa18c', '#f4a261', '#6c63ff', '#e76f51'],
-        }]
-      };
 
-      new Chart(document.getElementById('expensesChart'), {
-        type: 'pie',
-        data: expensesData
-      });
+  <!-- ================= CHART SCRIPT ================= -->
+  <script>
 
-      new Chart(document.getElementById('investmentChart'), {
-        type: 'pie',
-        data: investmentsData
-      });
-    </script>
-  </body>
-</html> -->
-=======
-{% load static %}
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Home</title>
-    <link rel="stylesheet" href="{% static 'style.css' %}" />
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  </head>
+    /* ================= EXPENSE CHART ================= */
 
-  <body class="home-page">
-    <div class="container">
-      <!-- Sidebar -->
-      <div class="sidebar">
-        <h2>XYZ</h2>
-        <a href="{% url 'home'%}" class="active">Home</a>
-        <a href="{% url 'expenses'%}">Expenses</a>
-        <a href="{% url 'investment'%}">Investment</a>
-        <a href="{% url 'settings'%}">Settings</a>
-      </div>
+    const expensesColors = [
+        '#3aa18c',
+        '#f4a261',
+        '#6c63ff',
+        '#e76f51',
+        '#264653'
+    ];
 
-      <!-- Main content -->
-      <div class="main">
-        <!-- Header -->
-        <div class="header">
-          <h1>Dashboard</h1>
-          <div class="header-actions">
-            <a href="{% url 'add_expenses' %}" class="btn primary"
-              >+ New Expense</a
-            >
-            <a href="{% url 'add_investment' %}" class="btn secondary"
-              >+ New Investment</a
-            >
-          </div>
-        </div>
+    const expensesLabels =
+        {{ expenses_labels|default:"[]"|safe }};
 
-        <!-- Top Cards / Charts -->
-        <div class="cards">
-          <div class="card">
-            <h3>Expenses Distribution</h3>
-            <div class="chart-row">
-              <!-- Left: Chart -->
-              <div class="chart-container">
-                <canvas id="expensesChart"></canvas>
-              </div>
+    const expensesValues =
+        {{ expenses_data|default:"[]"|safe }};
 
-              <!-- Right: Custom Legend -->
-              <div class="chart-legend" id="expensesLegend"></div>
-            </div>
-          </div>
-
-          <div class="card">
-            <h3>Investments Distribution</h3>
-            <div class="chart-container">
-              <canvas id="investmentChart"></canvas>
-            </div>
-          </div>
-
-          <div class="card">
-            <h3>Calendar</h3>
-            <input type="date" />
-          </div>
-        </div>
-
-        <!-- Recent Tables -->
-        <div class="bottom-tables">
-          <div class="table-card">
-            <h2>Recent Expenses</h2>
-            <table>
-              <thead>
-                <tr>
-                  <th>Name  </th>
-                  <th>Category</th>
-                  <th>Amount</th>
-                  <th>Date</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for expense in recent_expenses %}
-                <tr>
-                  <td>{{ expense.expenseName }}</td>
-                  <td>{{ expense.category }}</td>
-                  <td>{{ expense.amount }}</td>
-                  <td>{{ expense.date }}</td>
-                </tr>
-                {% empty %}
-                <tr>
-                  <td colspan="4">No recent expenses</td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
-
-          <div class="table-card">
-            <h2>Recent Investments</h2>
-            <table>
-              <thead>
-                <tr>
-                  <th>Owner</th>
-                  <th>Details</th>
-                  <th>Amount</th>
-                  <th>Date</th>
-                </tr>
-              </thead>
-              {% comment %}
-              <tbody>
-                {% for inv in recent_investments %}
-                <tr>
-                  <td>{{ inv.owner }}</td>
-                  <td>{{ inv.details }}</td>
-                  <td>{{ inv.amount }}</td>
-                  <td>{{ inv.date }}</td>
-                </tr>
-                {% empty %}
-                <tr>
-                  <td colspan="4">No recent investments</td>
-                </tr>
-                {% endfor %}
-              </tbody>
-              {% endcomment %}
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Chart.js scripts -->
-    <script>
-      const expensesColors = ['#3aa18c', '#f4a261', '#6c63ff', '#e76f51', '#264653'];
-
-      const expensesData = {
-        labels: {{ expenses_labels|safe }},
-        datasets: [{
-          data: {{ expenses_data|safe }},
-          backgroundColor: expensesColors,
-        }]
-      };
-
-      const chart = new Chart(document.getElementById('expensesChart'), {
-        type: 'pie',
-        data: expensesData,
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              display: false  // hide default legend
+    const expensesChart = new Chart(
+        document.getElementById('expensesChart'),
+        {
+            type: 'pie',
+            data: {
+                labels: expensesLabels,
+                datasets: [{
+                    data: expensesValues,
+                    backgroundColor: expensesColors
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display:false }
+                }
             }
-          }
         }
-      });
+    );
 
-      // 🔹 Custom Legend (Only color + name)
-      const legendContainer = document.getElementById("expensesLegend");
 
-      expensesData.labels.forEach((label, index) => {
-        const item = document.createElement("div");
-        item.classList.add("legend-item");
+    /* ================= INVESTMENT CHART ================= */
 
-        const colorBox = document.createElement("span");
-        colorBox.classList.add("legend-color");
-        colorBox.style.backgroundColor = expensesColors[index];
+    const investmentColors = [
+        '#6c63ff',
+        '#2a9d8f',
+        '#e9c46a',
+        '#f4a261',
+        '#e76f51'
+    ];
 
-        const text = document.createElement("span");
-        text.textContent = label;
+    const investmentLabels =
+        {{ investment_labels|default:"[]"|safe }};
 
-        item.appendChild(colorBox);
-        item.appendChild(text);
-        legendContainer.appendChild(item);
-      });
-    </script>
-  </body>
+    const investmentValues =
+        {{ investment_data|default:"[]"|safe }};
+
+    new Chart(
+        document.getElementById('investmentChart'),
+        {
+            type: 'pie',
+            data: {
+                labels: investmentLabels,
+                datasets: [{
+                    data: investmentValues,
+                    backgroundColor: investmentColors
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio:false
+            }
+        }
+    );
+
+
+    /* ================= CUSTOM LEGEND ================= */
+
+    const legend = document.getElementById("expensesLegend");
+
+    if (expensesLabels.length > 0) {
+
+        expensesLabels.forEach((label, i) => {
+
+            const item = document.createElement("div");
+            item.classList.add("legend-item");
+
+            const color = document.createElement("span");
+            color.classList.add("legend-color");
+            color.style.backgroundColor =
+                expensesColors[i % expensesColors.length];
+
+            const text = document.createElement("span");
+            text.textContent = label;
+
+            item.appendChild(color);
+            item.appendChild(text);
+
+            legend.appendChild(item);
+        });
+    }
+
+</script>
+
+
+</body>
+
 </html>
->>>>>>> origin/naman

@@ -1,178 +1,138 @@
-<<<<<<< HEAD
 {% load static %}
 <!doctype html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Investment</title>
-  <link rel="stylesheet" href="{% static 'style.css' %}" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investment</title>
+
+    <link rel="stylesheet" href="{% static 'style.css' %}">
 </head>
 
 <body class="investment-page">
-  <div class="container">
-    
-    <!-- Sidebar -->
-    <aside class="sidebar">
-      <h2>XYZ</h2>
-      <a href="{% url 'home' %}">Home</a>
-      <a href="{% url 'expenses' %}">Expenses</a>
-      <a href="{% url 'investment' %}" class="active">Investment</a>
-      <a href="{% url 'settings' %}">Settings</a>
-    </aside>
-    
-    <!-- Main Content -->
-    <div class="main">
-      
-      <!-- Header Section -->
-      <div class="header">
-        <h1>Investment</h1>
-        <a href="{% url 'add_investment' %}" class="btn primary">
-          + New Investment
-        </a>
-      </div>
-      
-      <!-- Investment Table -->
-      <div class="expense-card">
-        <table>
-          <thead>
-            <tr>
-              <th>NAME</th>
-              <th>CURRENCY</th>
-              <th>AMOUNT</th>
-              <th>DATE</th>
-              <th>DESCRIPTION</th>
-              <th>ACTION</th>
-            </tr>
-          </thead>
 
-          <tbody>
-            {% for i in investments %}
-            <tr>
-              <td>{{ i.investmentName }}</td>
-              <td>{{ i.currency }}</td>
-              <td>{{ i.amount }}</td>
-              <td>{{ i.date }}</td>
-              <td>{{ i.description }}</td>
-              <td>
-                <a href="{% url 'edit_investment' i.id %}" class="btn secondary">Edit</a>
-                <a href="{% url 'delete_investment' i.id %}" 
-                   class="btn secondary"
-                   onclick="return confirm('Are you sure you want to delete this investment?')">
-                   Delete
-                </a>
-              </td>
-            </tr>
-            {% empty %}
-            <tr>
-              <td colspan="6" style="text-align:center;">No investments found</td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
+<div class="container">
+
+    <!-- ================= SIDEBAR ================= -->
+    <aside class="sidebar">
+        <h2>XYZ</h2>
+
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'expenses' %}">Expenses</a>
+        <a href="{% url 'investment' %}" class="active">
+            Investment
+        </a>
+        <a href="{% url 'settings' %}">Settings</a>
+    </aside>
+
+
+    <!-- ================= MAIN ================= -->
+    <div class="main">
+
+        <!-- Header -->
+        <div class="header">
+            <h1>Investment</h1>
+
+            <a href="{% url 'add_investment' %}"
+               class="btn primary">
+               + New Investment
+            </a>
+        </div>
+
+
+        <!-- ================= SUMMARY ================= -->
+        <div class="cards">
+
+            <div class="card">
+                <h3>Total Investments</h3>
+                <p>₹ {{ total_investments }}</p>
+            </div>
+
+            <div class="card">
+                <h3>This Month</h3>
+                <p>₹ {{ monthly_investments }}</p>
+            </div>
+
+            <div class="card">
+                <h3>Total Records</h3>
+                <p>{{ investments|length }}</p>
+            </div>
+
+        </div>
+
+
+        <!-- ================= TABLE ================= -->
+        <div class="expense-card">
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Currency</th>
+                        <th>Amount</th>
+                        <th>Date</th>
+                        <th>Description</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                {% for i in investments %}
+                    <tr>
+                        <td>{{ i.investmentName }}</td>
+
+                        <td>{{ i.currency }}</td>
+
+                        <td>
+                            {{ i.amount }} {{ i.currency }}
+                        </td>
+
+                        <td>
+                            {{ i.date|date:"d M Y" }}
+                        </td>
+
+                        <td>{{ i.description }}</td>
+
+                        <td>
+
+                            <a href="{% url 'edit_investment' i.id %}"
+                               class="btn secondary">
+                               Edit
+                            </a>
+
+                            <form method="POST"
+                                  action="{% url 'delete_investment' i.id %}"
+                                  style="display:inline;">
+                                {% csrf_token %}
+
+                                <button type="submit"
+                                        class="btn secondary"
+                                        onclick="return confirm('Delete this investment?')">
+                                    Delete
+                                </button>
+                            </form>
+
+                        </td>
+                    </tr>
+
+                {% empty %}
+                    <tr>
+                        <td colspan="6"
+                            style="text-align:center;">
+                            No investments found
+                        </td>
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+
+        </div>
 
     </div>
-  </div>
-</body>
-</html>
-=======
-{% load static %}
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Investment</title>
-  <link rel="stylesheet" href="{% static 'style.css' %}" />
-</head>
-
-<body class="investment-page">
-  <div class="container">
-    
-    <!-- Sidebar -->
-    <aside class="sidebar">
-      <h2>XYZ</h2>
-      <a href="{% url 'home' %}">Home</a>
-      <a href="{% url 'expenses' %}">Expenses</a>
-      <a href="{% url 'investment' %}" class="active">Investment</a>
-      <a href="{% url 'settings' %}">Settings</a>
-    </aside>
-    
-    <!-- Main Content -->
-    <div class="main">
-      
-      <!-- Header Section -->
-      <div class="header">
-        <h1>Investment</h1>
-        <a href="{% url 'add_investment' %}" class="btn primary">
-          + New Investment
-        </a>
-      </div>
-      <!-- Summary Cards -->
-      <div class="cards">
-        <div class="card">
-          <h3>Total Investments</h3>
-          <p>$120,000</p>
-        </div>
-      
-        <div class="card">
-          <h3>This Month</h3>
-          <p>$8,500</p>
-        </div>
-      
-        <div class="card">
-          <h3>Active</h3>
-          <p>5</p>
-        </div>
-      </div>
-      
-      <!-- Table Card -->
-      <div class="expense-card">
-        
-      <table>
-        <thead>
-          <tr>
-            <th>DETAILS</th>
-            <th>MERCHANT</th>
-            <th>AMOUNT</th>
-            <th>REPORT</th>
-            <th>STATUS</th>
-          </tr>
-        </thead>
-
-        <tbody>
-
-          <tr>
-            <td>ABC</td>
-            <td>EFG</td>
-            <td>XXXX</td>
-            <td>PQR</td>
-            <td>
-              <span class="status not-submitted">
-                Not Submitted
-              </span>
-            </td>
-          </tr>
-
-          <tr>
-            <td>LMN</td>
-            <td>SUV</td>
-            <td>XXXX</td>
-            <td>WXY</td>
-            <td>
-              <span class="status submitted">
-                Submitted
-              </span>
-            </td>
-          </tr>
-
-        </tbody>
-      </table>
-
-    </div>
-  </div>
 </div>
+
 </body>
 </html>
->>>>>>> origin/naman
