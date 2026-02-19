@@ -1,0 +1,98 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Investment</title>
+  <link rel="stylesheet" href="{% static 'style.css' %}" />
+</head>
+
+<body class="investment-page">
+  <div class="container">
+    
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <h2>XYZ</h2>
+      <a href="{% url 'home' %}">Home</a>
+      <a href="{% url 'expenses' %}">Expenses</a>
+      <a href="{% url 'investment' %}" class="active">Investment</a>
+      <a href="{% url 'settings' %}">Settings</a>
+    </aside>
+    
+    <!-- Main Content -->
+    <div class="main">
+      
+      <!-- Header Section -->
+      <div class="header">
+        <h1>Investment</h1>
+        <a href="{% url 'add_investment' %}" class="btn primary">
+          + New Investment
+        </a>
+      </div>
+      <!-- Summary Cards -->
+      <div class="cards">
+        <div class="card">
+          <h3>Total Investments</h3>
+          <p>$120,000</p>
+        </div>
+      
+        <div class="card">
+          <h3>This Month</h3>
+          <p>$8,500</p>
+        </div>
+      
+        <div class="card">
+          <h3>Active</h3>
+          <p>5</p>
+        </div>
+      </div>
+      
+      <!-- Table Card -->
+      <div class="expense-card">
+        
+      <table>
+        <thead>
+          <tr>
+            <th>DETAILS</th>
+            <th>MERCHANT</th>
+            <th>AMOUNT</th>
+            <th>REPORT</th>
+            <th>STATUS</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          <tr>
+            <td>ABC</td>
+            <td>EFG</td>
+            <td>XXXX</td>
+            <td>PQR</td>
+            <td>
+              <span class="status not-submitted">
+                Not Submitted
+              </span>
+            </td>
+          </tr>
+
+          <tr>
+            <td>LMN</td>
+            <td>SUV</td>
+            <td>XXXX</td>
+            <td>WXY</td>
+            <td>
+              <span class="status submitted">
+                Submitted
+              </span>
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>
+</body>
+</html>
