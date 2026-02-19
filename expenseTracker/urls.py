@@ -16,10 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 import expenseTracker.views as views
+from . import views
+
 
 urlpatterns = [
     path('',views.home,name="home"),
-    path('login/',views.login_view,name="login"),
+    path('login/', views.login_view, name='login'),
+    path('register/', views.register_view, name='register'),
     path('admin/', admin.site.urls),
     path('settings/', views.settings, name='settings'),
     path('expenses/', include('expenses.urls')),

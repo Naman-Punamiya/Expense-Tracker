@@ -1,7 +1,7 @@
-from django.shortcuts import redirect, render, get_object_or_404
+from django.shortcuts import redirect, render
 from .models import Investment
 
-# ---------------- CREATE ----------------
+# Create your views here.
 def add_investment(request):
     if request.method == "POST":
         Investment.objects.create(
@@ -43,3 +43,5 @@ def delete_investment(request, id):
     inv = get_object_or_404(Investment, id=id)
     inv.delete()
     return redirect('investment')
+def newInvestment(request):
+    return render(request,'project_new_investment.html')
