@@ -75,18 +75,9 @@
             <select name="currency" class="search-input">
               <option value="">All Currencies</option>
               {% for c in currencies %}
-              <option
-                value="{{ c }}"
-                {%
-                if
-                request.GET.currency=""
-                ="c"
-                %}selected{%
-                endif
-                %}
-              >
-                {{ c }}
-              </option>
+                <option value="{{ c }}" {% if request.GET.currency == c %}selected{% endif %}>
+                  {{ c }}
+                </option>
               {% endfor %}
             </select>
 
