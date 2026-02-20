@@ -18,6 +18,10 @@
         <a href="{% url 'expenses' %}">Expenses</a>
         <a href="{% url 'investment' %}">Investment</a>
         <a href="{% url 'settings' %}" class="active">Settings</a>
+        <form action="{% url 'logout' %}" method="post" style="margin-top:15px;">
+          {% csrf_token %}
+          <button type="submit" class="logout-btn">Logout</button>
+        </form>
       </div>
 
       <!-- Main content -->
