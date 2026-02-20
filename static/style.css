@@ -1515,3 +1515,53 @@ tbody tr:hover {
     width: 100%;
   }
 }
+.sidebar form {
+    margin: 0;
+}
+
+.sidebar .logout-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 18px;        /* same size as other links */
+    font-family: inherit;   /* same font */
+    text-align: left;
+    padding: 12px 20px;
+    width: 100%;
+    cursor: pointer;
+}
+
+.sidebar .logout-btn:hover {
+    background-color: #3aa18c;  /* same hover effect */
+    border-radius: 8px;
+}
+
+/* =========================
+   SIDEBAR LOGOUT SAME AS LINKS
+========================= */
+
+.sidebar form {
+  margin: 0;
+}
+
+.sidebar .logout-btn {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  background: none;
+  border: none;
+  text-align: left;
+  text-decoration: none;
+  font-family: 'Segoe UI', sans-serif;   /* same font */
+  font-size: 16px;                       /* same size */
+  color: #cfe7e3;                        /* same color */
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.sidebar .logout-btn:hover {
+  background: #2c6b5f;
+  color: #fff;
+}

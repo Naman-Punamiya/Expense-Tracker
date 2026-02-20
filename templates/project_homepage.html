@@ -23,13 +23,19 @@
       <a href="{% url 'expenses' %}">Expenses</a>
       <a href="{% url 'investment' %}">Investment</a>
       <a href="{% url 'settings' %}">Settings</a>
+
+      <!-- ✅ LOGOUT BUTTON (POST METHOD) -->
+      <form action="{% url 'logout' %}" method="post" style="margin-top:15px;">
+        {% csrf_token %}
+        <button type="submit" class="logout-btn">Logout</button>
+      </form>
+
     </div>
 
 
     <!-- ================= MAIN ================= -->
     <div class="main">
 
-      <!-- Header -->
       <div class="header">
         <h1>Dashboard</h1>
 
@@ -48,7 +54,6 @@
       <!-- ================= CHART CARDS ================= -->
       <div class="cards">
 
-        <!-- Expenses Chart -->
         <div class="card">
           <h3>Expenses Distribution</h3>
 
@@ -61,8 +66,6 @@
           </div>
         </div>
 
-
-        <!-- Investment Chart -->
         <div class="card">
           <h3>Investments Distribution</h3>
 
@@ -71,8 +74,6 @@
           </div>
         </div>
 
-
-        <!-- Calendar -->
         <div class="card">
           <h3>Calendar</h3>
           <input type="date">
@@ -84,7 +85,6 @@
       <!-- ================= TABLES ================= -->
       <div class="bottom-tables">
 
-        <!-- Recent Expenses -->
         <div class="table-card">
           <h2>Recent Expenses</h2>
 
@@ -101,26 +101,14 @@
             <tbody>
               {% for expense in recent_expenses %}
               <tr>
-                <td>
-                  {{ expense.expenseName }}
-                </td>
-
+                <td>{{ expense.expenseName }}</td>
                 <td>{{ expense.category }}</td>
-
-                <td>
-                  {{ expense.amount }}
-                  {{ expense.currency }}
-                </td>
-
-                <td>
-                  {{ expense.date|date:"d M Y" }}
-                </td>
+                <td>{{ expense.amount }} {{ expense.currency }}</td>
+                <td>{{ expense.date|date:"d M Y" }}</td>
               </tr>
               {% empty %}
               <tr>
-                <td colspan="4">
-                  No recent expenses
-                </td>
+                <td colspan="4">No recent expenses</td>
               </tr>
               {% endfor %}
             </tbody>
@@ -128,7 +116,6 @@
         </div>
 
 
-        <!-- Recent Investments -->
         <div class="table-card">
           <h2>Recent Investments</h2>
 
@@ -147,19 +134,12 @@
               <tr>
                 <td>{{ inv.investmentName }}</td>
                 <td>{{ inv.description }}</td>
-                <td>
-                  {{ inv.amount }}
-                  {{ inv.currency }}
-                </td>
-                <td>
-                  {{ inv.date|date:"d M Y" }}
-                </td>
+                <td>{{ inv.amount }} {{ inv.currency }}</td>
+                <td>{{ inv.date|date:"d M Y" }}</td>
               </tr>
               {% empty %}
               <tr>
-                <td colspan="4">
-                  No recent investments
-                </td>
+                <td colspan="4">No recent investments</td>
               </tr>
               {% endfor %}
             </tbody>
@@ -173,25 +153,13 @@
   </div>
 
 
-
   <!-- ================= CHART SCRIPT ================= -->
   <script>
 
-    /* ================= EXPENSE CHART ================= */
+    const expensesColors = ['#3aa18c','#f4a261','#6c63ff','#e76f51','#264653'];
 
-    const expensesColors = [
-        '#3aa18c',
-        '#f4a261',
-        '#6c63ff',
-        '#e76f51',
-        '#264653'
-    ];
-
-    const expensesLabels =
-        {{ expenses_labels|default:"[]"|safe }};
-
-    const expensesValues =
-        {{ expenses_data|default:"[]"|safe }};
+    const expensesLabels = {{ expenses_labels|default:"[]"|safe }};
+    const expensesValues = {{ expenses_data|default:"[]"|safe }};
 
     const expensesChart = new Chart(
         document.getElementById('expensesChart'),
@@ -207,29 +175,15 @@
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                plugins: {
-                    legend: { display:false }
-                }
+                plugins: { legend: { display:false } }
             }
         }
     );
 
+    const investmentColors = ['#6c63ff','#2a9d8f','#e9c46a','#f4a261','#e76f51'];
 
-    /* ================= INVESTMENT CHART ================= */
-
-    const investmentColors = [
-        '#6c63ff',
-        '#2a9d8f',
-        '#e9c46a',
-        '#f4a261',
-        '#e76f51'
-    ];
-
-    const investmentLabels =
-        {{ investment_labels|default:"[]"|safe }};
-
-    const investmentValues =
-        {{ investment_data|default:"[]"|safe }};
+    const investmentLabels = {{ investment_labels|default:"[]"|safe }};
+    const investmentValues = {{ investment_data|default:"[]"|safe }};
 
     new Chart(
         document.getElementById('investmentChart'),
@@ -242,43 +196,11 @@
                     backgroundColor: investmentColors
                 }]
             },
-            options: {
-                responsive: true,
-                maintainAspectRatio:false
-            }
+            options: { responsive: true, maintainAspectRatio:false }
         }
     );
 
-
-    /* ================= CUSTOM LEGEND ================= */
-
-    const legend = document.getElementById("expensesLegend");
-
-    if (expensesLabels.length > 0) {
-
-        expensesLabels.forEach((label, i) => {
-
-            const item = document.createElement("div");
-            item.classList.add("legend-item");
-
-            const color = document.createElement("span");
-            color.classList.add("legend-color");
-            color.style.backgroundColor =
-                expensesColors[i % expensesColors.length];
-
-            const text = document.createElement("span");
-            text.textContent = label;
-
-            item.appendChild(color);
-            item.appendChild(text);
-
-            legend.appendChild(item);
-        });
-    }
-
-</script>
-
+  </script>
 
 </body>
-
 </html>
