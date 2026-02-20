@@ -53,32 +53,23 @@
 
       <!-- ================= CHART CARDS ================= -->
       <div class="cards">
-
         <div class="card">
           <h3>Expenses Distribution</h3>
-
           <div class="chart-row">
             <div class="chart-container">
               <canvas id="expensesChart"></canvas>
             </div>
-
-            <div id="expensesLegend" class="chart-legend"></div>
           </div>
         </div>
 
         <div class="card">
           <h3>Investments Distribution</h3>
-
-          <div class="chart-container">
-            <canvas id="investmentChart"></canvas>
+          <div class="chart-row">
+            <div class="chart-container">
+              <canvas id="investmentChart"></canvas>
+            </div>
           </div>
         </div>
-
-        <div class="card">
-          <h3>Calendar</h3>
-          <input type="date">
-        </div>
-
       </div>
 
 
@@ -155,33 +146,44 @@
 
   <!-- ================= CHART SCRIPT ================= -->
   <script>
-
     const expensesColors = ['#3aa18c','#f4a261','#6c63ff','#e76f51','#264653'];
-
     const expensesLabels = {{ expenses_labels|default:"[]"|safe }};
     const expensesValues = {{ expenses_data|default:"[]"|safe }};
-
     const expensesChart = new Chart(
         document.getElementById('expensesChart'),
         {
             type: 'pie',
             data: {
-                labels: expensesLabels,
-                datasets: [{
-                    data: expensesValues,
-                    backgroundColor: expensesColors
-                }]
+              labels: expensesLabels,
+              datasets: [{
+                data: expensesValues,
+                backgroundColor: expensesColors,
+                radius:'80%'
+              }]
             },
             options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { legend: { display:false } }
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: { 
+                legend: { 
+                  position: 'right',
+                  labels: {
+                    font: {
+                      size: 16,
+                      weight:'bold', // Font size for the labels
+                      family: "sans-serif", // Font family
+                    },
+                    usePointStyle: true,
+                    pointStyle: 'rectRounded',
+                    boxWidth: 14,
+                  }
+                } 
+              }
             }
         }
     );
 
     const investmentColors = ['#6c63ff','#2a9d8f','#e9c46a','#f4a261','#e76f51'];
-
     const investmentLabels = {{ investment_labels|default:"[]"|safe }};
     const investmentValues = {{ investment_data|default:"[]"|safe }};
 
@@ -193,14 +195,32 @@
                 labels: investmentLabels,
                 datasets: [{
                     data: investmentValues,
-                    backgroundColor: investmentColors
+                    backgroundColor: investmentColors,
+                    radius:'80%'
                 }]
             },
-            options: { responsive: true, maintainAspectRatio:false }
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: { 
+                legend: { 
+                  position: 'right',
+                  labels: {
+                    boxWidth: 20,
+                    font: {
+                      size: 16,
+                      weight:'bold', // Font size for the labels
+                      family: "sans-serif", // Font family
+                    },
+                    usePointStyle: true,
+                    pointStyle: 'rectRounded',
+                    boxWidth: 14,
+                  }
+                } 
+              }
+            }
         }
     );
-
   </script>
-
 </body>
 </html>

@@ -31,7 +31,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('settings/', views.settings, name='settings'),
     path('expenses/', include('expenses.urls')),
-   path('', include('expenses.urls')),
+    path('investment/', include('investment.urls')),
     path('logout/', LogoutView.as_view(next_page='login'), name='logout'),
-   path('', include('investment.urls')),
 ]
