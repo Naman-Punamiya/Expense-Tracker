@@ -19,6 +19,11 @@
         <a href="{% url 'expenses' %}">Expenses</a>
         <a href="{% url 'investment' %}" class="active">Investment</a>
         <a href="{% url 'settings' %}">Settings</a>
+
+        <form action="{% url 'logout' %}" method="post" style="margin-top:15px;">
+          {% csrf_token %}
+          <button type="submit" class="logout-btn">Logout</button>
+        </form>
       </aside>
 
       <!-- ================= MAIN ================= -->
@@ -75,18 +80,9 @@
             <select name="currency" class="search-input">
               <option value="">All Currencies</option>
               {% for c in currencies %}
-              <option
-                value="{{ c }}"
-                {%
-                if
-                request.GET.currency=""
-                ="c"
-                %}selected{%
-                endif
-                %}
-              >
-                {{ c }}
-              </option>
+                <option value="{{ c }}" {% if request.GET.currency == c %}selected{% endif %}>
+                  {{ c }}
+                </option>
               {% endfor %}
             </select>
 
