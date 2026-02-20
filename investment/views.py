@@ -1,7 +1,71 @@
 from django.shortcuts import redirect, render, get_object_or_404
 from .models import Investment
 
+<<<<<<< Updated upstream
 # ---------------- CREATE ----------------
+=======
+
+
+def investment(request):
+    
+    from django.db.models import Q
+    from django.db.models import Sum
+    from django.utils.timezone import now
+
+    query = request.GET.get('q')            # search
+    currency = request.GET.get('currency')  # currency filter  ✅ NEW
+
+    investments = Investment.objects.all().order_by('-date')
+
+    # ================= SEARCH FILTER =================
+    if query:
+        investments = investments.filter(
+            Q(investmentName__icontains=query) |
+            Q(description__icontains=query) |
+            Q(currency__icontains=query)
+        )
+
+    # ================= CURRENCY FILTER =================
+    if currency:   # ✅ NEW
+        investments = investments.filter(currency=currency)
+
+    # ===== TOTAL INVESTMENT =====
+    total_investments = (
+        investments.aggregate(
+            total=Sum('amount')
+        )['total'] or 0
+    )
+
+    # ===== MONTHLY INVESTMENT =====
+    today = now()
+
+    monthly_investments = (
+        investments.filter(
+            date__year=today.year,
+            date__month=today.month
+        ).aggregate(
+            total=Sum('amount')
+        )['total'] or 0
+    )
+
+    # ===== DISTINCT CURRENCIES FOR DROPDOWN =====
+    currencies = Investment.objects.values_list('currency', flat=True).distinct()  # ✅ NEW
+
+    context = {
+        "investments": investments,
+        "total_investments": total_investments,
+        "monthly_investments": monthly_investments,
+        "currencies": currencies,   # ✅ NEW
+    }
+
+    return render(
+        request,
+        "project_investment.html",
+        context
+    )
+
+
+>>>>>>> Stashed changes
 def add_investment(request):
     if request.method == "POST":
         Investment.objects.create(
