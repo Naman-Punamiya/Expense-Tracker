@@ -30,8 +30,12 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
-LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = '/'
+#LOGIN_URL = '/login/'
+#LOGIN_REDIRECT_URL = '/'
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'investment'
+LOGOUT_REDIRECT_URL = 'login'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -40,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     'expenses',
     'investment',
 ]

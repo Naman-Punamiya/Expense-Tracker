@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Expense Detail</title>
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+
+<body class="ExpensePage">
+<div class="sidebar">
+  <h2>XYZ</h2>
+</div>
+
+<div class="main">
+
+  <div class="card">
+    <h2>{{ expense.expenseName }}</h2>
+    <p><strong>Category:</strong> {{ expense.category }}</p>
+    <p><strong>Amount:</strong> {{ expense.amount }} {{ expense.currency }}</p>
+    <p><strong>Date:</strong> {{ expense.date }}</p>
+  </div>
+
+  <div style="margin-top:20px; display:flex; gap:15px;">
+    
+    <!-- Update -->
+    <a href="{% url 'edit_expense' expense.id %}" class="btn btn-primary">
+      Update
+    </a>
+
+    <!-- Delete -->
+    <form method="POST" action="{% url 'delete_expense' expense.id %}">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-secondary"
+        onclick="return confirm('Delete this expense?');">
+        Delete
+      </button>
+    </form>
+
+  </div>
+
+</div>
+</body>
+</html>

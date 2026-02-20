@@ -1,25 +1,86 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.db.models import Sum
+from django.utils.timezone import now
+from datetime import date
+
 from .models import Categories, Expense
 
+
+# ================= ADD EXPENSE =================
 def add_expenses(request):
+
     if request.method == "POST":
         Expense.objects.create(
-            expenseName = request.POST.get('name'),
-            category = request.POST.get('category'),
-            date = request.POST.get('date'),
-            amount = request.POST.get('amount'),
-            currency = request.POST.get('currency'),
-            description = request.POST.get('description'),
+            expenseName=request.POST.get('name'),
+            category=request.POST.get('category'),
+            date=request.POST.get('date'),
+            amount=request.POST.get('amount'),
+            currency=request.POST.get('currency'),
+            description=request.POST.get('description'),
         )
         return redirect('expenses')
-    
-    return render(request,"project_new_expenses.html",{
-        'categories': Categories
-    })
 
+    context = {
+        "categories": Categories,
+        "today": date.today().isoformat()
+    }
+
+    return render(request, "project_new_expenses.html", context)
+
+
+# ================= EXPENSE LIST =================
 def expenses(request):
-    all_expenses = Expense.objects.all().order_by('-date')
-    return render(request,'project_expenses.html',{'expenses' : all_expenses})
 
-def newExpenses(request):
-    return render(request,'project_new_expenses.html')
+    all_expenses = Expense.objects.all().order_by('-date')
+
+    total_expenses = Expense.objects.aggregate(
+        total=Sum('amount')
+    )['total'] or 0
+
+    today = now()
+
+    monthly_expenses = Expense.objects.filter(
+        date__year=today.year,
+        date__month=today.month
+    ).aggregate(total=Sum('amount'))['total'] or 0
+
+    context = {
+        "expenses": all_expenses,
+        "total_expenses": total_expenses,
+        "monthly_expenses": monthly_expenses
+    }
+
+    return render(request, "project_expenses.html", context)
+
+# ================= EDIT =================
+def edit_expense(request, id):
+
+    expense = get_object_or_404(Expense, id=id)
+
+    if request.method == "POST":
+        expense.expenseName = request.POST.get('expenseName')
+        expense.category = request.POST.get('category')
+        expense.amount = request.POST.get('amount')
+        expense.currency = request.POST.get('currency')
+        expense.date = request.POST.get('date')
+
+        expense.save()
+
+        return redirect('expenses')
+
+    return render(
+        request,
+        "edit_expense.html",
+        {"expense": expense}
+    )
+
+
+# ================= DELETE =================
+def delete_expense(request, id):
+
+    expense = get_object_or_404(Expense, id=id)
+
+    if request.method == "POST":
+        expense.delete()
+
+    return redirect('expenses')

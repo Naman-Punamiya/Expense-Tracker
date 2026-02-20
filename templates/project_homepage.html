@@ -1,143 +1,226 @@
 {% load static %}
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Home</title>
-    <link rel="stylesheet" href="{% static 'style.css' %}" />
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  </head>
 
-  <body class="home-page">
-    <div class="container">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
 
-      <!-- Sidebar -->
-      <div class="sidebar">
-        <h2>XYZ</h2>
-        <a href="{% url 'home'%}" class="active">Home</a>
-        <a href="{% url 'expenses'%}">Expenses</a>
-        <a href="{% url 'investment'%}">Investment</a>
-        <a href="{% url 'settings'%}">Settings</a>
-      </div>
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
 
-      <!-- Main content -->
-      <div class="main">
+<body class="home-page">
 
-        <!-- Header -->
-        <div class="header">
-          <h1>Dashboard</h1>
-          <div class="header-actions">
-            <a href="{% url 'add_expenses' %}" class="btn primary">+ New Expense</a>
-            <a href="{% url 'add_investment' %}" class="btn secondary">+ New Investment</a>
-          </div>
-        </div>
+  <div class="container">
 
-        <!-- Top Cards / Charts -->
-        <div class="cards">
-          <div class="card">
-            <h3>Expenses Distribution</h3>
-            <canvas id="expensesChart"></canvas>
-          </div>
+    <!-- ================= SIDEBAR ================= -->
+    <div class="sidebar">
+      <h2>XYZ</h2>
 
-          <div class="card">
-            <h3>Investments Distribution</h3>
-            <canvas id="investmentChart"></canvas>
-          </div>
+      <a href="{% url 'home' %}" class="active">Home</a>
+      <a href="{% url 'expenses' %}">Expenses</a>
+      <a href="{% url 'investment' %}">Investment</a>
+      <a href="{% url 'settings' %}">Settings</a>
 
-          <div class="card">
-            <h3>Calendar</h3>
-            <input type="date" />
-          </div>
-        </div>
+      <!-- ✅ LOGOUT BUTTON (POST METHOD) -->
+      <form action="{% url 'logout' %}" method="post" style="margin-top:15px;">
+        {% csrf_token %}
+        <button type="submit" class="logout-btn">Logout</button>
+      </form>
 
-        <!-- Recent Tables -->
-        <div class="bottom-tables">
-          <div class="table-card">
-            <h2>Recent Expenses</h2>
-            <table>
-              <thead>
-                <tr>
-                  <th>Owner</th>
-                  <th>Category</th>
-                  <th>Amount</th>
-                  <th>Date</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for expense in recent_expenses %}
-                <tr>
-                  <td>{{ expense.owner }}</td>
-                  <td>{{ expense.category }}</td>
-                  <td>{{ expense.amount }}</td>
-                  <td>{{ expense.date }}</td>
-                </tr>
-                {% empty %}
-                <tr><td colspan="4">No recent expenses</td></tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
-
-          <div class="table-card">
-            <h2>Recent Investments</h2>
-            <table>
-              <thead>
-                <tr>
-                  <th>Owner</th>
-                  <th>Details</th>
-                  <th>Amount</th>
-                  <th>Date</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for inv in recent_investments %}
-                <tr>
-                  <td>{{ inv.owner }}</td>
-                  <td>{{ inv.details }}</td>
-                  <td>{{ inv.amount }}</td>
-                  <td>{{ inv.date }}</td>
-                </tr>
-                {% empty %}
-                <tr><td colspan="4">No recent investments</td></tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-      </div>
     </div>
 
-    <!-- Chart.js scripts -->
-    <!-- <script>
-      const expensesData = {
-        labels: {{ expenses_labels|safe }},
-        datasets: [{
-          label: 'Expenses',
-          data: {{ expenses_data|safe }},
-          backgroundColor: ['#3aa18c', '#f4a261', '#6c63ff', '#e76f51'],
-        }]
-      };
 
-      const investmentsData = {
-        labels: {{ investments_labels|safe }},
-        datasets: [{
-          label: 'Investments',
-          data: {{ investments_data|safe }},
-          backgroundColor: ['#3aa18c', '#f4a261', '#6c63ff', '#e76f51'],
-        }]
-      };
+    <!-- ================= MAIN ================= -->
+    <div class="main">
 
-      new Chart(document.getElementById('expensesChart'), {
-        type: 'pie',
-        data: expensesData
-      });
+      <div class="header">
+        <h1>Dashboard</h1>
 
-      new Chart(document.getElementById('investmentChart'), {
-        type: 'pie',
-        data: investmentsData
-      });
-    </script>
-  </body>
-</html> -->
+        <div class="header-actions">
+          <a href="{% url 'add_expenses' %}" class="btn primary">
+            + New Expense
+          </a>
+
+          <a href="{% url 'add_investment' %}" class="btn secondary">
+            + New Investment
+          </a>
+        </div>
+      </div>
+
+
+      <!-- ================= CHART CARDS ================= -->
+      <div class="cards">
+        <div class="card">
+          <h3>Expenses Distribution</h3>
+          <div class="chart-row">
+            <div class="chart-container">
+              <canvas id="expensesChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Investments Distribution</h3>
+          <div class="chart-row">
+            <div class="chart-container">
+              <canvas id="investmentChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- ================= TABLES ================= -->
+      <div class="bottom-tables">
+
+        <div class="table-card">
+          <h2>Recent Expenses</h2>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Amount</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {% for expense in recent_expenses %}
+              <tr>
+                <td>{{ expense.expenseName }}</td>
+                <td>{{ expense.category }}</td>
+                <td>{{ expense.amount }} {{ expense.currency }}</td>
+                <td>{{ expense.date|date:"d M Y" }}</td>
+              </tr>
+              {% empty %}
+              <tr>
+                <td colspan="4">No recent expenses</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+
+        <div class="table-card">
+          <h2>Recent Investments</h2>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Amount</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {% for inv in recent_investments %}
+              <tr>
+                <td>{{ inv.investmentName }}</td>
+                <td>{{ inv.description }}</td>
+                <td>{{ inv.amount }} {{ inv.currency }}</td>
+                <td>{{ inv.date|date:"d M Y" }}</td>
+              </tr>
+              {% empty %}
+              <tr>
+                <td colspan="4">No recent investments</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+
+          </table>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ================= CHART SCRIPT ================= -->
+  <script>
+    const expensesColors = ['#3aa18c','#f4a261','#6c63ff','#e76f51','#264653'];
+    const expensesLabels = {{ expenses_labels|default:"[]"|safe }};
+    const expensesValues = {{ expenses_data|default:"[]"|safe }};
+    const expensesChart = new Chart(
+        document.getElementById('expensesChart'),
+        {
+            type: 'pie',
+            data: {
+              labels: expensesLabels,
+              datasets: [{
+                data: expensesValues,
+                backgroundColor: expensesColors,
+                radius:'80%'
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: { 
+                legend: { 
+                  position: 'right',
+                  labels: {
+                    font: {
+                      size: 16,
+                      weight:'bold', // Font size for the labels
+                      family: "sans-serif", // Font family
+                    },
+                    usePointStyle: true,
+                    pointStyle: 'rectRounded',
+                    boxWidth: 14,
+                  }
+                } 
+              }
+            }
+        }
+    );
+
+    const investmentColors = ['#6c63ff','#2a9d8f','#e9c46a','#f4a261','#e76f51'];
+    const investmentLabels = {{ investment_labels|default:"[]"|safe }};
+    const investmentValues = {{ investment_data|default:"[]"|safe }};
+
+    new Chart(
+        document.getElementById('investmentChart'),
+        {
+            type: 'pie',
+            data: {
+                labels: investmentLabels,
+                datasets: [{
+                    data: investmentValues,
+                    backgroundColor: investmentColors,
+                    radius:'80%'
+                }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: { 
+                legend: { 
+                  position: 'right',
+                  labels: {
+                    boxWidth: 20,
+                    font: {
+                      size: 16,
+                      weight:'bold', // Font size for the labels
+                      family: "sans-serif", // Font family
+                    },
+                    usePointStyle: true,
+                    pointStyle: 'rectRounded',
+                    boxWidth: 14,
+                  }
+                } 
+              }
+            }
+        }
+    );
+  </script>
+</body>
+</html>
