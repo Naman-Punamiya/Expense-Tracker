@@ -58,7 +58,13 @@
                 <h3>This Month</h3>
                 <p>₹ {{ monthly_expenses|intcomma }}</p>
             </div>
-        </div>
+
+            <div class="card">
+                <h3>Total Records</h3>
+                <p>{{ expenses|length }}</p>
+              </div>
+            </div>
+        
 
         <div style="margin: 20px 0; display: flex; justify-content: flex-start">
             
