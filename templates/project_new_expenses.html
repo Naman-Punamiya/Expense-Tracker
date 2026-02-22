@@ -14,12 +14,23 @@
 
     <!-- Sidebar -->
     <div class="sidebar">
-        <h2>XYZ</h2>
-
-        <a href="{% url 'home' %}">Home</a>
-        <a href="{% url 'expenses' %}" class="active">Expenses</a>
-        <a href="{% url 'investment' %}">Investment</a>
-        <a href="{% url 'settings' %}">Settings</a>
+        <h2 class="logo">
+            {% if request.user.is_authenticated %}
+                {{ request.user.username }}
+            {% else %}
+                Guest
+            {% endif %}
+          </h2>
+        <nav class="menu">
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'expenses' %}" class="active">Expenses</a>
+            <a href="{% url 'investment' %}">Investment</a>
+            <a href="{% url 'settings' %}">Settings</a>
+            <form action="{% url 'logout' %}" method="post" style="margin-top:15px;">
+                {% csrf_token %}
+                <button type="submit" class="logout-btn">Logout</button>
+            </form>
+        </nav>
     </div>
 
 

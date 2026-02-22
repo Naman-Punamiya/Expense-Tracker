@@ -17,7 +17,13 @@
 
     <!-- ================= SIDEBAR ================= -->
     <div class="sidebar">
-      <h2>XYZ</h2>
+      <h2 class="logo">
+        {% if request.user.is_authenticated %}
+            {{ request.user.username }}
+        {% else %}
+            Guest
+        {% endif %}
+      </h2>
 
       <a href="{% url 'home' %}" class="active">Home</a>
       <a href="{% url 'expenses' %}">Expenses</a>

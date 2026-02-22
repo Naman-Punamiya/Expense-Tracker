@@ -11,7 +11,8 @@ def investment(request):
     currency = request.GET.get('currency')
     # ===================================================
 
-    investments = Investment.objects.all().order_by('-date')
+    # investments = Investment.objects.all().order_by('-date')
+    investments = Investment.objects.filter(user=request.user).order_by('-date')
 
     # 🔍 Search filter
     if query:
@@ -26,7 +27,9 @@ def investment(request):
         investments = investments.filter(currency=currency)
 
     # Unique currencies for dropdown
-    currencies = Investment.objects.values_list('currency', flat=True).distinct()
+    # currencies = Investment.objects.values_list('currency', flat=True).distinct()
+    currencies = Investment.objects.filter(user=request.user) \
+            .values_list('currency', flat=True).distinct()
 
     # ===== TOTAL INVESTMENT =====
     total_investments = investments.aggregate(total=Sum('amount'))['total'] or 0
@@ -51,7 +54,15 @@ def investment(request):
 def add_investment(request):
 
     if request.method == "POST":
+        # Investment.objects.create(
+        #     investmentName=request.POST.get('name'),
+        #     date=request.POST.get('date'),
+        #     amount=request.POST.get('amount'),
+        #     currency=request.POST.get('currency'),
+        #     description=request.POST.get('description'),
+        # )
         Investment.objects.create(
+            user=request.user,   # ✅ ADD THIS LINE
             investmentName=request.POST.get('name'),
             date=request.POST.get('date'),
             amount=request.POST.get('amount'),
@@ -65,7 +76,8 @@ def add_investment(request):
 
 def edit_investment(request, id):
 
-    inv = get_object_or_404(Investment, id=id)
+    # inv = get_object_or_404(Investment, id=id)
+    inv = get_object_or_404(Investment, id=id, user=request.user)
 
     if request.method == "POST":
         inv.investmentName = request.POST.get('name')
@@ -82,7 +94,8 @@ def edit_investment(request, id):
 
 def delete_investment(request, id):
 
-    inv = get_object_or_404(Investment, id=id)
+    # inv = get_object_or_404(Investment, id=id)
+    inv = get_object_or_404(Investment, id=id, user=request.user)
 
     if request.method == "POST":
         inv.delete()

@@ -11,6 +11,7 @@ def add_expenses(request):
 
     if request.method == "POST":
         Expense.objects.create(
+            user=request.user,   # ✅ ADD
             expenseName=request.POST.get('name'),
             category=request.POST.get('category'),
             date=request.POST.get('date'),
@@ -34,7 +35,8 @@ def expenses(request):
     query = request.GET.get('q')          # expense name search
     category = request.GET.get('category')
 
-    all_expenses = Expense.objects.all().order_by('-date')
+    # all_expenses = Expense.objects.all().order_by('-date')
+    all_expenses = Expense.objects.filter(user=request.user).order_by('-date')   # ✅
 
     # 🔍 SEARCH (ONLY expense name)
     if query:
@@ -62,7 +64,9 @@ def expenses(request):
         "expenses": all_expenses,
         "total_expenses": total_expenses,
         "monthly_expenses": monthly_expenses,
-        "categories": Expense.objects.values_list('category', flat=True).distinct(),  # dropdown
+        # "categories": Expense.objects.values_list('category', flat=True).distinct(),
+        "categories": Expense.objects.filter(user=request.user)
+               .values_list('category', flat=True).distinct(),  # dropdown
     }
 
     return render(request, "project_expenses.html", context)
@@ -70,7 +74,8 @@ def expenses(request):
 # ================= EDIT =================
 def edit_expense(request, id):
 
-    expense = get_object_or_404(Expense, id=id)
+    # expense = get_object_or_404(Expense, id=id)
+    expense = get_object_or_404(Expense, id=id, user=request.user)
 
     if request.method == "POST":
         expense.expenseName = request.POST.get('expenseName')
@@ -93,7 +98,8 @@ def edit_expense(request, id):
 # ================= DELETE =================
 def delete_expense(request, id):
 
-    expense = get_object_or_404(Expense, id=id)
+    # expense = get_object_or_404(Expense, id=id)
+    expense = get_object_or_404(Expense, id=id, user=request.user)
 
     if request.method == "POST":
         expense.delete()
