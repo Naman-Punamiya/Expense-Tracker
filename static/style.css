@@ -1571,3 +1571,78 @@ tbody tr:hover {
   background: #2c6b5f;
   color: #fff;
 }
+
+/* =========================
+   SEARCH FILTER UI (GLOBAL)
+   Investment + Expense Match
+========================= */
+
+.search-form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.search-input {
+  height: 42px;
+  min-width: 180px;
+  padding: 0 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  background: #fff;
+  color: #333;
+  outline: none;
+  transition: 0.25s ease;
+}
+
+/* Input focus */
+.search-input:focus {
+  border-color: #3aa18c;
+  box-shadow: 0 0 0 3px rgba(58, 161, 140, 0.15);
+}
+
+/* Select same height fix */
+.search-input select,
+select.search-input {
+  height: 42px;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath fill='%23333' d='M0 0l5 6 5-6z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 10px;
+  padding-right: 28px;
+  cursor: pointer;
+}
+
+/* Search button */
+.search-form .btn.primary {
+  height: 42px;
+  padding: 0 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  background: #3aa18c;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.search-form .btn.primary:hover {
+  background: #2c6b5f;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .search-form {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .search-input,
+  .search-form .btn.primary {
+    width: 100%;
+  }
+}

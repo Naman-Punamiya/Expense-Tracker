@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Sum
 from django.utils.timezone import now
 from datetime import date
-
+from django.db.models import Q
 from .models import Categories, Expense
 
 
@@ -31,15 +31,29 @@ def add_expenses(request):
 # ================= EXPENSE LIST =================
 def expenses(request):
 
+    query = request.GET.get('q')          # expense name search
+    category = request.GET.get('category')
+
     all_expenses = Expense.objects.all().order_by('-date')
 
-    total_expenses = Expense.objects.aggregate(
+    # 🔍 SEARCH (ONLY expense name)
+    if query:
+        all_expenses = all_expenses.filter(
+            Q(expenseName__icontains=query)
+        )
+
+    # 📂 CATEGORY FILTER
+    if category:
+        all_expenses = all_expenses.filter(category=category)
+
+    # totals
+    total_expenses = all_expenses.aggregate(
         total=Sum('amount')
     )['total'] or 0
 
     today = now()
 
-    monthly_expenses = Expense.objects.filter(
+    monthly_expenses = all_expenses.filter(
         date__year=today.year,
         date__month=today.month
     ).aggregate(total=Sum('amount'))['total'] or 0
@@ -47,7 +61,8 @@ def expenses(request):
     context = {
         "expenses": all_expenses,
         "total_expenses": total_expenses,
-        "monthly_expenses": monthly_expenses
+        "monthly_expenses": monthly_expenses,
+        "categories": Expense.objects.values_list('category', flat=True).distinct(),  # dropdown
     }
 
     return render(request, "project_expenses.html", context)

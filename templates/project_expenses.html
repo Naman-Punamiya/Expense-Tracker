@@ -23,7 +23,7 @@
             <form action="{% url 'logout' %}" method="post" style="margin-top:15px;">
                 {% csrf_token %}
                 <button type="submit" class="logout-btn">Logout</button>
-              </form>
+            </form>
         </nav>
     </div>
 
@@ -54,9 +54,41 @@
             </div>
         </div>
 
+        <div style="margin: 20px 0; display: flex; justify-content: flex-start">
+            
+            <form
+            method="GET"
+            action="{% url 'expenses' %}"
+            class="search-form"
+            style="display: flex; gap: 10px; align-items: center"
+          >
+              <input
+                type="text"
+                name="q"
+                placeholder="Search expense..."
+                value="{{ request.GET.q }}"
+                class="search-input"
+              />
+          
+              <select name="category" class="search-input">
+                <option value="">All Categories</option>
+                {% for c in categories %}
+                  <option value="{{ c }}" {% if request.GET.category == c %}selected{% endif %}>
+                    {{ c }}
+                  </option>
+                {% endfor %}
+              </select>
+          
+              <button type="submit" class="btn primary">Search</button>
+              
+            </form>
+        </div>
+
         <!-- Table -->
         <div class="table-wrapper">
             <h2>Transaction History</h2>
+
+           
 
             <table>
                 <thead>
@@ -94,7 +126,7 @@
                     </tr>
                 {% empty %}
                     <tr>
-                        <td colspan="4">No expenses added yet</td>
+                        <td colspan="4">No expenses found</td>
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -154,5 +186,6 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 });
 </script>
+
 </body>
 </html>
