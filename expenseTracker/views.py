@@ -13,22 +13,22 @@ def home(request):
     if not request.user.is_authenticated:
         return redirect('login')
 
+    # ✅ shared account
+    account = request.user.account_set.first()
+
     # ---------- Recent Records ----------
-    # recent_expenses = Expense.objects.order_by('-date')[:4]
-    recent_expenses = Expense.objects.filter(user=request.user).order_by('-date')[:4]
-    # recent_investments = Investment.objects.order_by('-date')[:4]
-    recent_investments = Investment.objects.filter(user=request.user).order_by('-date')[:4]
+    recent_expenses = Expense.objects.filter(
+        account=account
+    ).order_by('-date')[:4]
+
+    recent_investments = Investment.objects.filter(
+        account=account
+    ).order_by('-date')[:4]
 
     # ---------- Expense Chart ----------
-    # expense_distribution = (
-    #     Expense.objects
-    #     .values('category')
-    #     .annotate(total=Sum('amount'))
-    # )
-
     expense_distribution = (
         Expense.objects
-        .filter(user=request.user)   # ✅ ADD
+        .filter(account=account)
         .values('category')
         .annotate(total=Sum('amount'))
     )
@@ -43,15 +43,10 @@ def home(request):
         for item in expense_distribution
     ]
 
-    # ---------- Investment Chart (BY NAME) ----------
-    # investment_distribution = (
-    #     Investment.objects
-    #     .values('investmentName')
-    #     .annotate(total=Sum('amount'))
-    # )
+    # ---------- Investment Chart ----------
     investment_distribution = (
         Investment.objects
-        .filter(user=request.user)   # ✅ ADD
+        .filter(account=account)
         .values('investmentName')
         .annotate(total=Sum('amount'))
     )
@@ -69,11 +64,8 @@ def home(request):
     context = {
         "recent_expenses": recent_expenses,
         "recent_investments": recent_investments,
-
         "expenses_labels": expenses_labels,
         "expenses_data": expenses_data,
-
-        # ✅ investment chart
         "investment_labels": investment_labels,
         "investment_data": investment_data,
     }
