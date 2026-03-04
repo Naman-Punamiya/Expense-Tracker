@@ -1,163 +1,190 @@
 {% load static %}
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Investment</title>
 
-    <link rel="stylesheet" href="{% static 'style.css' %}" />
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Investment</title>
 
-  <body class="investment-page">
-    <div class="container">
-      <!-- ================= SIDEBAR ================= -->
-      <aside class="sidebar">
-        <h2 class="logo">
-          {% if request.user.is_authenticated %}
-              {{ request.user.username }}
-          {% else %}
-              Guest
-          {% endif %}
-        </h2>
+  <link rel="stylesheet" href="{% static 'style.css' %}" />
+</head>
 
-        <a href="{% url 'home' %}">Home</a>
-        <a href="{% url 'expenses' %}">Expenses</a>
-        <a href="{% url 'investment' %}" class="active">Investment</a>
-        <a href="{% url 'settings' %}">Settings</a>
+<body class="investment-page">
+  <div class="container">
+    <!-- ================= SIDEBAR ================= -->
+    <aside class="sidebar">
+      <h2 class="logo">
+        {% if request.user.is_authenticated %}
+        {{ request.user.username }}
+        {% else %}
+        Guest
+        {% endif %}
+      </h2>
 
-        <form action="{% url 'logout' %}" method="post" style="margin-top:15px;">
-          {% csrf_token %}
-          <button type="submit" class="logout-btn">Logout</button>
+      <a href="{% url 'home' %}">Home</a>
+      <a href="{% url 'expenses' %}">Expenses</a>
+      <a href="{% url 'investment' %}" class="active">Investment</a>
+      <a href="{% url 'settings' %}">Settings</a>
+
+      <form action="{% url 'logout' %}" method="post" style="margin-top:15px;">
+        {% csrf_token %}
+        <button type="submit" class="logout-btn">Logout</button>
+      </form>
+    </aside>
+
+    <!-- ================= MAIN ================= -->
+    <div class="main">
+      <!-- ================= HEADER ================= -->
+      <div class="header" style="display: flex; align-items: center">
+        <h1>Investment</h1>
+
+        <a href="{% url 'add_investment' %}" class="btn primary" style="margin-left: auto">
+          + New Investment
+        </a>
+      </div>
+
+      <!-- ================= SUMMARY ================= -->
+      <div class="cards">
+        <div class="card">
+          <h3>Total Investments</h3>
+          <p>₹ {{ total_investments }}</p>
+        </div>
+
+        <div class="card">
+          <h3>This Month</h3>
+          <p>₹ {{ monthly_investments }}</p>
+        </div>
+
+        <div class="card">
+          <h3>Total Records</h3>
+          <p>{{ investments|length }}</p>
+        </div>
+      </div>
+
+      <!-- 🔍 SEARCH + CURRENCY FILTER -->
+      <div style="margin: 20px 0; display: flex; justify-content: flex-start">
+        <form method="GET" action="{% url 'investment' %}" class="search-form"
+          style="display: flex; gap: 10px; align-items: center">
+          <!-- Search box -->
+          <input type="text" name="q" placeholder="Search investment..." value="{{ request.GET.q }}"
+            class="search-input" />
+
+          <!-- Currency dropdown -->
+          <select name="currency" class="search-input">
+            <option value="">All Currencies</option>
+            {% for c in currencies %}
+            <option value="{{ c }}" {% if request.GET.currency == c %}selected{% endif %}>
+              {{ c }}
+            </option>
+            {% endfor %}
+          </select>
+
+          <!-- Search button -->
+          <button type="submit" class="btn primary">Search</button>
         </form>
-      </aside>
+      </div>
+      <!-- 🔍 SEARCH + FILTER END -->
 
-      <!-- ================= MAIN ================= -->
-      <div class="main">
-        <!-- ================= HEADER ================= -->
-        <div class="header" style="display: flex; align-items: center">
-          <h1>Investment</h1>
+      <!-- ================= TABLE ================= -->
+      <div class="expense-card">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Currency</th>
+              <th>Amount</th>
+              <th>Date</th>
+              <th>Description</th>
+              <th>Action</th>
+            </tr>
+          </thead>
 
-          <a
-            href="{% url 'add_investment' %}"
-            class="btn primary"
-            style="margin-left: auto"
-          >
-            + New Investment
-          </a>
-        </div>
-
-        <!-- ================= SUMMARY ================= -->
-        <div class="cards">
-          <div class="card">
-            <h3>Total Investments</h3>
-            <p>₹ {{ total_investments }}</p>
-          </div>
-
-          <div class="card">
-            <h3>This Month</h3>
-            <p>₹ {{ monthly_investments }}</p>
-          </div>
-
-          <div class="card">
-            <h3>Total Records</h3>
-            <p>{{ investments|length }}</p>
-          </div>
-        </div>
-
-        <!-- 🔍 SEARCH + CURRENCY FILTER -->
-        <div style="margin: 20px 0; display: flex; justify-content: flex-start">
-          <form
-            method="GET"
-            action="{% url 'investment' %}"
-            class="search-form"
-            style="display: flex; gap: 10px; align-items: center"
-          >
-            <!-- Search box -->
-            <input
-              type="text"
-              name="q"
-              placeholder="Search investment..."
-              value="{{ request.GET.q }}"
-              class="search-input"
-            />
-
-            <!-- Currency dropdown -->
-            <select name="currency" class="search-input">
-              <option value="">All Currencies</option>
-              {% for c in currencies %}
-                <option value="{{ c }}" {% if request.GET.currency == c %}selected{% endif %}>
-                  {{ c }}
-                </option>
-              {% endfor %}
-            </select>
-
-            <!-- Search button -->
-            <button type="submit" class="btn primary">Search</button>
-          </form>
-        </div>
-        <!-- 🔍 SEARCH + FILTER END -->
-
-        <!-- ================= TABLE ================= -->
-        <div class="expense-card">
-          <table>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Currency</th>
-                <th>Amount</th>
-                <th>Date</th>
-                <th>Description</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {% for i in investments %}
-              <tr>
-                <td>{{ i.investmentName }}</td>
-                <td>{{ i.currency }}</td>
-                <td>{{ i.amount }} {{ i.currency }}</td>
-                <td>{{ i.date|date:"d M Y" }}</td>
-                <td>{{ i.description }}</td>
-
-                <td>
-                  <a
-                    href="{% url 'edit_investment' i.id %}"
-                    class="btn secondary"
-                  >
-                    Edit
-                  </a>
-
-                  <form
-                    method="POST"
-                    action="{% url 'delete_investment' i.id %}"
-                    style="display: inline"
-                  >
-                    {% csrf_token %}
-                    <button
-                      type="submit"
-                      class="btn secondary"
-                      onclick="return confirm('Delete this investment?');"
-                    >
-                      Delete
-                    </button>
-                  </form>
-                </td>
-              </tr>
-
-              {% empty %}
-              <tr>
-                <td colspan="6" style="text-align: center">
-                  No investments found
-                </td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
-        <!-- ================= TABLE END ================= -->
+          <tbody>
+            {% for i in investments %}
+            <tr>
+              <td>
+                <span class="investment-title" data-id="{{ i.id }}">
+                  {{ i.investmentName }}
+                </span>
+              </td>
+              <td>{{ i.currency }}</td>
+              <td>{{ i.amount }} {{ i.currency }}</td>
+              <td>{{ i.date|date:"d M Y" }}</td>
+              <td>{{ i.description }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="6" style="text-align: center">
+                No investments found
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
       </div>
     </div>
-  </body>
+  </div>
+  <div id="investmentModal" class="modal">
+    <div class="modal-content">
+
+      <span class="close">×</span>
+
+      <h3>Investment Options</h3>
+
+      <div class="modal-actions">
+
+        <a id="editInvestmentLink" class="btn btn-primary modal-btn">
+          Edit
+        </a>
+
+        <form id="deleteInvestmentForm" method="POST">
+          {% csrf_token %}
+
+          <button type="submit" class="btn btn-secondary modal-btn">
+            Delete
+          </button>
+
+        </form>
+
+      </div>
+
+    </div>
+  </div>
+  <script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+      const modal = document.getElementById("investmentModal");
+      const editLink = document.getElementById("editInvestmentLink");
+      const deleteForm = document.getElementById("deleteInvestmentForm");
+
+      document.querySelectorAll(".investment-title").forEach(item => {
+
+        item.addEventListener("click", function () {
+
+          const id = this.dataset.id;
+
+          modal.style.display = "flex";
+
+          editLink.href = `/investment/edit/${id}/`;
+          deleteForm.action = `/investment/delete/${id}/`;
+
+        });
+
+      });
+
+      document.querySelector(".close").onclick = () =>
+        modal.style.display = "none";
+
+      window.onclick = (e) => {
+        if (e.target === modal)
+          modal.style.display = "none";
+      };
+
+    });
+
+  </script>
+</body>
+
 </html>

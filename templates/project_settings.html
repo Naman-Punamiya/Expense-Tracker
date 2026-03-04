@@ -1,14 +1,12 @@
 {% load static %}
 <!doctype html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Settings</title>
   <link rel="stylesheet" href="{% static 'style.css' %}" />
 </head>
-
 <body class="settings-page">
   <div class="container">
 
@@ -37,39 +35,31 @@
         <div class="header">
           <h1>Settings</h1>
         </div>
-
         <div class="form">
           <label>Full Name</label>
           <input type="text" name="full_name" placeholder="Enter your name" />
-
           <label>Email</label>
           <input type="email" name="email" placeholder="Enter your email" />
-
           <label>Password</label>
           <input type="password" name="password" placeholder="Enter new password" />
-
           <label>Currency</label>
           <select name="currency">
             <option value="INR">INR</option>
             <option value="USD">USD</option>
             <option value="EUR">EUR</option>
           </select>
-
           <label>Notifications</label>
           <select name="notifications">
             <option value="enable">Enable</option>
             <option value="disable">Disable</option>
           </select>
-
           <div class="actions">
             <button type="submit" class="btn primary">Save Changes</button>
           </div>
         </div>
-
       </div>
       <!-- ================= SHARE ACCOUNT ================= -->
       <div class="expense-card" style="margin-top:20px;">
-
         <div class="header">
           <h2>Share Account</h2>
         </div>
@@ -80,25 +70,18 @@
         <p style="color:green;">{{ message }}</p>
         {% endfor %}
         {% endif %}
-
         <form method="post" action="{% url 'add_member' %}">
           {% csrf_token %}
-
           <label>Partner Email</label>
           <input type="email" name="email" placeholder="Enter partner email" required />
-
           <div class="actions">
             <button type="submit" class="btn primary">
               Add Member
             </button>
           </div>
-
         </form>
-
       </div>
     </div>
-
   </div>
 </body>
-
 </html>
