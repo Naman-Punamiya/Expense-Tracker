@@ -48,12 +48,16 @@
 
                 <label>Category</label>
                 <select name="category">
-                    {% for value, label in categories %}
-                        <option value="{{ value }}">
-                            {{ label }}
-                        </option>
-                    {% endfor %}
-                </select>
+
+{% for category in categories %}
+
+<option value="{{ category.id }}">
+{{ category.name }}
+</option>
+
+{% endfor %}
+
+</select>
 
                 <label>Merchant</label>
                 <input type="text" name="merchant" required>

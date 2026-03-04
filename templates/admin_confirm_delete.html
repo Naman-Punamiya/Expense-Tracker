@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Confirmation - Admin Panel</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f4f6f9;
+        }
+        .navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .card {
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            border: none;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'admin_dashboard' %}">💰 Admin Panel</a>
+        </div>
+    </nav>
+    
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <div class="card">
+                    <div class="card-header bg-danger text-white">
+                        <h4 class="mb-0">⚠️ Delete Confirmation</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="alert alert-danger">
+                            <h5>Are you sure you want to delete this {{ type }}?</h5>
+                            <p class="mb-0">This action cannot be undone!</p>
+                        </div>
+                        
+                        <div class="details mb-4 p-3 bg-light rounded">
+                            {% if type == "Category" %}
+                                <p><strong>Name:</strong> {{ object.name }}</p>
+                                <p><strong>Description:</strong> {{ object.description }}</p>
+                            {% elif type == "Expense" %}
+                                <p><strong>Name:</strong> {{ object.expenseName }}</p>
+                                <p><strong>Amount:</strong> ₹{{ object.amount }} {{ object.currency }}</p>
+                                <p><strong>Date:</strong> {{ object.date }}</p>
+                            {% endif %}
+                        </div>
+                        
+                        <form method="POST" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">🗑️ Delete Permanently</button>
+                        </form>
+                        
+                        {% if type == "Category" %}
+                            <a href="{% url 'admin_categories' %}" class="btn btn-secondary">❌ Cancel</a>
+                        {% elif type == "Expense" %}
+                            <a href="{% url 'admin_expenses' %}" class="btn btn-secondary">❌ Cancel</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
