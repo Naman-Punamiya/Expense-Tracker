@@ -2,24 +2,42 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Sum, Q
 from django.utils.timezone import now
 
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+
 from .models import Investment
 from expenses.models import Account
 
 
+# ================= GET USER ACCOUNT =================
+def get_user_account(user):
+
+    account = user.account_set.first()
+
+    if not account:
+        account = Account.objects.create(
+            name=f"{user.username} Account"
+        )
+        account.members.add(user)
+
+    return account
+
+
 # ================= INVESTMENT LIST =================
+@login_required
 def investment(request):
 
-    account = request.user.account_set.first()
+    account = get_user_account(request.user)
 
     # ===== SEARCH + FILTER =====
-    query = request.GET.get('q')
-    currency = request.GET.get('currency')
+    query = request.GET.get("q")
+    currency = request.GET.get("currency")
 
     investments = Investment.objects.filter(
         account=account
-    ).order_by('-date')
+    ).order_by("-date")
 
-    # 🔍 Search
+    # 🔍 SEARCH
     if query:
         investments = investments.filter(
             Q(investmentName__icontains=query) |
@@ -27,19 +45,19 @@ def investment(request):
             Q(currency__icontains=query)
         )
 
-    # 💱 Currency Filter
+    # 💱 CURRENCY FILTER
     if currency:
         investments = investments.filter(currency=currency)
 
-    # Dropdown currencies
+    # AVAILABLE CURRENCIES
     currencies = Investment.objects.filter(
         account=account
-    ).values_list('currency', flat=True).distinct()
+    ).values_list("currency", flat=True).distinct()
 
     # ===== TOTAL =====
     total_investments = investments.aggregate(
-        total=Sum('amount')
-    )['total'] or 0
+        total=Sum("amount")
+    )["total"] or 0
 
     # ===== MONTHLY =====
     today = now()
@@ -48,8 +66,8 @@ def investment(request):
         date__year=today.year,
         date__month=today.month
     ).aggregate(
-        total=Sum('amount')
-    )['total'] or 0
+        total=Sum("amount")
+    )["total"] or 0
 
     context = {
         "investments": investments,
@@ -62,29 +80,33 @@ def investment(request):
 
 
 # ================= ADD INVESTMENT =================
+@login_required
 def add_investment(request):
 
-    account = request.user.account_set.first()
+    account = get_user_account(request.user)
 
     if request.method == "POST":
+
         Investment.objects.create(
             account=account,
-            investmentName=request.POST.get('name'),
-            date=request.POST.get('date'),
-            amount=request.POST.get('amount'),
-            currency=request.POST.get('currency'),
-            description=request.POST.get('description'),
+            investmentName=request.POST.get("name"),
+            date=request.POST.get("date"),
+            amount=request.POST.get("amount"),
+            currency=request.POST.get("currency"),
+            description=request.POST.get("description"),
         )
 
-        return redirect('investment')
+        messages.success(request, "Investment added successfully!")
+        return redirect("investment")
 
     return render(request, "project_new_investment.html")
 
 
 # ================= EDIT INVESTMENT =================
+@login_required
 def edit_investment(request, id):
 
-    account = request.user.account_set.first()
+    account = get_user_account(request.user)
 
     inv = get_object_or_404(
         Investment,
@@ -93,26 +115,30 @@ def edit_investment(request, id):
     )
 
     if request.method == "POST":
-        inv.investmentName = request.POST.get('name')
-        inv.date = request.POST.get('date')
-        inv.amount = request.POST.get('amount')
-        inv.currency = request.POST.get('currency')
-        inv.description = request.POST.get('description')
+
+        inv.investmentName = request.POST.get("name")
+        inv.date = request.POST.get("date")
+        inv.amount = request.POST.get("amount")
+        inv.currency = request.POST.get("currency")
+        inv.description = request.POST.get("description")
 
         inv.save()
-        return redirect('investment')
+
+        messages.success(request, "Investment updated successfully!")
+        return redirect("investment")
 
     return render(
         request,
-        'project_edit_investment.html',
-        {'inv': inv}
+        "project_edit_investment.html",
+        {"inv": inv}
     )
 
 
 # ================= DELETE INVESTMENT =================
+@login_required
 def delete_investment(request, id):
 
-    account = request.user.account_set.first()
+    account = get_user_account(request.user)
 
     inv = get_object_or_404(
         Investment,
@@ -122,5 +148,6 @@ def delete_investment(request, id):
 
     if request.method == "POST":
         inv.delete()
+        messages.success(request, "Investment deleted successfully!")
 
-    return redirect('investment')
+    return redirect("investment")
