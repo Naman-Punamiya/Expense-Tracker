@@ -22,12 +22,14 @@
         {% endif %}
       </h2>
 
-      <a href="{% url 'home' %}">Home</a>
-      <a href="{% url 'expenses' %}">Expenses</a>
-      <a href="{% url 'investment' %}" class="active">Investment</a>
-      <a href="{% url 'settings' %}">Settings</a>
+      <nav class="sidebar-nav">
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'expenses' %}">Expenses</a>
+        <a href="{% url 'investment' %}" class="active">Investment</a>
+        <a href="{% url 'settings' %}">Settings</a>
+      </nav>
 
-      <form action="{% url 'logout' %}" method="post" style="margin-top:15px;">
+      <form action="{% url 'logout' %}" method="post">
         {% csrf_token %}
         <button type="submit" class="logout-btn">Logout</button>
       </form>

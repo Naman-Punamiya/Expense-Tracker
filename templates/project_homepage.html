@@ -25,13 +25,15 @@
         {% endif %}
       </h2>
 
-      <a href="{% url 'home' %}" class="active">Home</a>
-      <a href="{% url 'expenses' %}">Expenses</a>
-      <a href="{% url 'investment' %}">Investment</a>
-      <a href="{% url 'settings' %}">Settings</a>
+      <nav class="sidebar-nav">
+        <a href="{% url 'home' %}" class="active">Home</a>
+        <a href="{% url 'expenses' %}">Expenses</a>
+        <a href="{% url 'investment' %}">Investment</a>
+        <a href="{% url 'settings' %}">Settings</a>
+      </nav>
 
       <!-- ✅ LOGOUT BUTTON (POST METHOD) -->
-      <form action="{% url 'logout' %}" method="post" style="margin-top:15px;">
+      <form action="{% url 'logout' %}" method="post">
         {% csrf_token %}
         <button type="submit" class="logout-btn">Logout</button>
       </form>
