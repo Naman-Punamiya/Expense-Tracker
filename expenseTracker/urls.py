@@ -2,35 +2,41 @@
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.2/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
 from django.urls import include, path
 import expenseTracker.views as views
 from django.contrib.auth.views import LogoutView
-
-
-
-
-from . import views
-
+from expenses import admin_views
 
 urlpatterns = [
-    path('',views.home,name="home"),
+    # Main App Routes
+    path('', views.home, name="home"),
     path('login/', views.login_view, name='login'),
     path('register/', views.register_view, name='register'),
-    path('admin/', admin.site.urls),
     path('settings/', views.settings, name='settings'),
+    path('logout/', LogoutView.as_view(next_page='login'), name='logout'),
+    
+    # Django Admin
+    path('admin/', admin.site.urls),
+    
+    # App URLs (expenses અને investment)
     path('expenses/', include('expenses.urls')),
     path('investment/', include('investment.urls')),
-    path('logout/', LogoutView.as_view(next_page='login'), name='logout'),
+    
+    # ============ ADMIN PANEL ROUTES ============
+    # Admin Login
+    path('admin-login/', admin_views.admin_login, name='admin_login'),
+    path('admin-logout/', admin_views.admin_logout, name='admin_logout'),
+    
+    # Admin Dashboard
+    path('admin-dashboard/', admin_views.admin_dashboard, name='admin_dashboard'),
+    
+    # Category Management
+    path('admin-categories/', admin_views.admin_categories, name='admin_categories'),
+    path('admin-categories/add/', admin_views.admin_add_category, name='admin_add_category'),
+    path('admin-categories/<int:pk>/edit/', admin_views.admin_edit_category, name='admin_edit_category'),
+    path('admin-categories/<int:pk>/delete/', admin_views.admin_delete_category, name='admin_delete_category'),
+    
+   
 ]
