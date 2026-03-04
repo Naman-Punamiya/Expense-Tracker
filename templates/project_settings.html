@@ -48,13 +48,8 @@
             <option value="USD">USD</option>
             <option value="EUR">EUR</option>
           </select>
-          <label>Notifications</label>
-          <select name="notifications">
-            <option value="enable">Enable</option>
-            <option value="disable">Disable</option>
-          </select>
           <div class="actions">
-            <button type="submit" class="btn primary">Save Changes</button>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
           </div>
         </div>
       </div>
@@ -73,9 +68,9 @@
         <form method="post" action="{% url 'add_member' %}">
           {% csrf_token %}
           <label>Partner Email</label>
-          <input type="email" name="email" placeholder="Enter partner email" required />
+          <input class="partner-email" type="email" name="email" placeholder="Enter Partner Username" required />
           <div class="actions">
-            <button type="submit" class="btn primary">
+            <button type="submit" class="btn btn-primary">
               Add Member
             </button>
           </div>
