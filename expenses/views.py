@@ -63,9 +63,13 @@ def expenses(request):
         )
     # Apply category filter
     if category_filter:
-        expense_list = expense_list.filter(
-            category_id=category_filter
-        )
+        try:
+            expense_list = expense_list.filter(
+                category_id=int(category_filter)
+            )
+        except (ValueError, TypeError):
+            # Invalid category ID, skip filtering
+            pass
     total_expenses = expense_list.aggregate(
         total=Sum("amount")
     )["total"] or 0
@@ -94,10 +98,15 @@ def edit_expense(request, id):
     )
     if request.method == "POST":
         expense.expenseName = request.POST.get("expenseName")
-        expense.category_id = request.POST.get("category")
+        category_id = request.POST.get("category")
+        if category_id:
+            expense.category_id = category_id
+        else:
+            expense.category = None
         expense.amount = request.POST.get("amount")
         expense.currency = request.POST.get("currency")
         expense.date = request.POST.get("date")
+
         expense.save()
         messages.success(request, "Expense updated successfully!")
         return redirect("expenses")

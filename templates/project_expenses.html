@@ -85,8 +85,8 @@
               <select name="category" class="search-input">
                 <option value="">All Categories</option>
                 {% for c in categories %}
-                  <option value="{{ c }}" {% if request.GET.category == c %}selected{% endif %}>
-                    {{ c }}
+                  <option value="{{ c.id }}" {% if request.GET.category == c.id|stringformat:'s' %}selected{% endif %}>
+                    {{ c.name }}
                   </option>
                 {% endfor %}
               </select>
@@ -156,7 +156,7 @@
         <h3>Expense Options</h3>
 
         <div class="modal-actions">
-            <a id="editLink"
+            <a id="editLink" href="#"
                class="btn btn-primary modal-btn">Edit</a>
 
             <form id="deleteForm" method="POST">
@@ -177,20 +177,31 @@ document.addEventListener("DOMContentLoaded", function () {
     const modal = document.getElementById("expenseModal");
     const editLink = document.getElementById("editLink");
     const deleteForm = document.getElementById("deleteForm");
+    
+    if (!modal || !editLink || !deleteForm) {
+        console.error("Modal elements not found");
+        return;
+    }
 
     document.querySelectorAll(".expense-title").forEach(item => {
         item.addEventListener("click", function () {
 
             const id = this.dataset.id;
+            if (!id) {
+                console.error("Expense ID not found");
+                return;
+            }
+            
             modal.style.display = "flex";
-
             editLink.href = `/expenses/expense/${id}/edit/`;
             deleteForm.action = `/expenses/expense/${id}/delete/`;
         });
     });
 
-    document.querySelector(".close").onclick =
-        () => modal.style.display = "none";
+    const closeBtn = document.querySelector(".close");
+    if (closeBtn) {
+        closeBtn.onclick = () => modal.style.display = "none";
+    }
 
     window.onclick = (e) => {
         if (e.target === modal)

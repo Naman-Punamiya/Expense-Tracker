@@ -1,44 +1,50 @@
 {% load static %}
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>Edit Expense</title>
-    <link rel="stylesheet" href="{% static 'style.css' %}" />
+       <title>Edit Expense</title>
+       <link rel="stylesheet" href="{% static 'style.css' %}" />
 </head>
+
 <body>
 
-<div class="form-container">
-    <h2>Edit Expense</h2>
+       <div class="form-container">
+              <h2>Edit Expense</h2>
 
-    <form method="POST">
-        {% csrf_token %}
+              <form method="POST">
+                     {% csrf_token %}
 
-        <label>Expense Name</label>
-        <input type="text" name="expenseName" 
-               value="{{ expense.expenseName }}" required>
+                     <label>Expense Name</label>
+                     <input type="text" name="expenseName" value="{{ expense.expenseName }}" required>
 
-        <label>Category</label>
-        <input type="text" name="category" 
-               value="{{ expense.category }}" required>
+                     <label>Category</label>
+                     <select name="category" required>
 
-        <label>Amount</label>
-        <input type="number" name="amount" 
-               value="{{ expense.amount }}" required>
+                            {% for category in categories %}
+                            <option value="{{ category.id }}" {% if expense.category.id == category.id %}selected{% endif %}>
+                                   {{ category.name }}
+                            </option>
+                            {% endfor %}
 
-        <label>Currency</label>
-        <input type="text" name="currency" 
-               value="{{ expense.currency }}" required>
+                     </select>
 
-        <label>Date</label>
-        <input type="date" name="date" 
-               value="{{ expense.date|date:'Y-m-d' }}" required>
+                     <label>Amount</label>
+                     <input type="number" name="amount" value="{{ expense.amount }}" required>
 
-        <button type="submit" class="btn btn-primary">
-            Save Changes
-        </button>
+                     <label>Currency</label>
+                     <input type="text" name="currency" value="{{ expense.currency }}" required>
 
-    </form>
-</div>
+                     <label>Date</label>
+                     <input type="date" name="date" value="{{ expense.date|date:'Y-m-d' }}" required>
+
+                     <button type="submit" class="btn btn-primary">
+                            Save Changes
+                     </button>
+
+              </form>
+       </div>
 
 </body>
+
 </html>
