@@ -20,11 +20,11 @@ def home(request):
     expense_distribution = (
         Expense.objects
         .filter(account=account)
-        .values("category")
+        .values("category__name")
         .annotate(total=Sum("amount"))
     )
     expenses_labels = [
-        item["category"]
+        item["category__name"]
         for item in expense_distribution
     ]
     expenses_data = [

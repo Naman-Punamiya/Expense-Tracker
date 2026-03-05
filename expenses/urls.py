@@ -10,6 +10,12 @@ urlpatterns = [
     # ADD EXPENSE PAGE
     path('add/', views.add_expenses, name='add_expenses'),
 
+    # EDIT EXPENSE
+    path('expense/<int:id>/edit/', views.edit_expense, name='edit_expense'),
+
+    # DELETE EXPENSE
+    path('expense/<int:id>/delete/', views.delete_expense, name='delete_expense'),
+
     # ADMIN ROUTES
     path('admin-login/', admin_views.admin_login, name='admin_login'),
     path('admin-logout/', admin_views.admin_logout, name='admin_logout'),
