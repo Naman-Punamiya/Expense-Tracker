@@ -12,14 +12,11 @@ from .models import Category, Expense, Account
 # If the user doesn't have an account, create one
 
 def get_user_account(user):
-    # Try to get the first account linked with the user
-    account = user.account_set.first()
-    # If no account exists → create one automatically
+    account = Account.objects.filter(members=user).first()
     if not account:
         account = Account.objects.create(
             name=f"{user.username} Account"
         )
-        # Add the user as a member of the account
         account.members.add(user)
     return account
 

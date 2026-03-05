@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, update_session_auth_hash
 from django.contrib.auth.models import User
 from django.db.models import Sum
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from expenses.models import Expense
 from investment.models import Investment
 
@@ -61,6 +62,24 @@ def home(request):
 # SETTINGS PAGE
 @login_required
 def settings(request):
+
+    if request.method == "POST":
+        user = request.user
+
+        user.username = request.POST.get("full_name")
+        user.email = request.POST.get("email")
+
+        password = request.POST.get("password")
+        if password:
+            user.set_password(password)
+            update_session_auth_hash(request, user)
+
+        user.save()
+
+        messages.success(request, "Settings updated successfully!")
+
+        return redirect("settings")
+
     return render(request, "project_settings.html")
 
 
