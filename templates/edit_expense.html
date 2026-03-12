@@ -3,48 +3,74 @@
 <html>
 
 <head>
-       <title>Edit Expense</title>
-       <link rel="stylesheet" href="{% static 'style.css' %}" />
+    <title>Edit Expense</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
 </head>
 
 <body>
 
-       <div class="form-container">
-              <h2>Edit Expense</h2>
+<div class="container">
 
-              <form method="POST">
-                     {% csrf_token %}
+    <aside class="sidebar">
+        <h2 class="logo">
+            {% if request.user.is_authenticated %}
+                {{ request.user.username }}
+            {% else %}
+                Guest
+            {% endif %}
+        </h2>
 
-                     <label>Expense Name</label>
-                     <input type="text" name="expenseName" value="{{ expense.expenseName }}" required>
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'expenses' %}" class="active">Expenses</a>
+        <a href="{% url 'investment' %}">Investment</a>
+        <a href="{% url 'settings' %}">Settings</a>
+    </aside>
 
-                     <label>Category</label>
-                     <select name="category" required>
+    <div class="main">
 
-                            {% for category in categories %}
-                            <option value="{{ category.id }}" {% if expense.category.id == category.id %}selected{% endif %}>
-                                   {{ category.name }}
-                            </option>
-                            {% endfor %}
+        <div class="header">
+            <h1>Edit Expense</h1>
+        </div>
 
-                     </select>
+        <div class="expense-card form">
 
-                     <label>Amount</label>
-                     <input type="number" name="amount" value="{{ expense.amount }}" required>
+            <form method="POST">
+                {% csrf_token %}
 
-                     <label>Currency</label>
-                     <input type="text" name="currency" value="{{ expense.currency }}" required>
+                <label>Expense Name</label>
+                <input type="text" name="expenseName" value="{{ expense.expenseName }}" required>
 
-                     <label>Date</label>
-                     <input type="date" name="date" value="{{ expense.date|date:'Y-m-d' }}" required>
+                <label>Category</label>
+                <select name="category" required>
+                    {% for category in categories %}
+                    <option value="{{ category.id }}" {% if expense.category.id == category.id %}selected{% endif %}>
+                        {{ category.name }}
+                    </option>
+                    {% endfor %}
+                </select>
 
-                     <button type="submit" class="btn btn-primary">
-                            Save Changes
-                     </button>
+                <label>Amount</label>
+                <input type="number" name="amount" value="{{ expense.amount }}" required>
 
-              </form>
-       </div>
+                <label>Currency</label>
+                <input type="text" name="currency" value="{{ expense.currency }}" required>
+
+                <label>Date</label>
+                <input type="date" name="date" value="{{ expense.date|date:'Y-m-d' }}" required>
+
+                <br><br>
+
+                <button type="submit" class="btn primary">
+                    Update Expense
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
 
 </body>
-
 </html>
