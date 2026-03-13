@@ -6,6 +6,23 @@ from django.contrib import messages
 from .models import Investment
 from expenses.models import Account
 
+# Currency conversion rates (example)
+USD_TO_INR = 92.47
+EUR_TO_INR = 106.12
+
+def convert_to_inr(amount, currency):
+    amount = float(amount)
+
+    if currency == "USD":
+        return amount * USD_TO_INR
+    elif currency == "EUR":
+        return amount * EUR_TO_INR
+    else:  # INR
+        return amount
+
+def format_inr(amount):
+    return "{:,.2f}".format(amount)
+
 # FUNCTION: Get user's account
 def get_user_account(user):
     # Get the first account linked to the user
@@ -40,20 +57,25 @@ def investment(request):
     currencies = Investment.objects.filter(
         account=account
     ).values_list("currency", flat=True).distinct()
-    total_investments = investments.aggregate(
-        total=Sum("amount")
-    )["total"] or 0
+    total_investments = 0
+
+    for inv in investments:
+        total_investments += convert_to_inr(inv.amount, inv.currency)
     today = now()
-    monthly_investments = investments.filter(
+    monthly_investments = 0
+
+    monthly_data = investments.filter(
         date__year=today.year,
         date__month=today.month
-    ).aggregate(
-        total=Sum("amount")
-    )["total"] or 0
+    )
+
+    for inv in monthly_data:
+        monthly_investments += convert_to_inr(inv.amount, inv.currency)
+    
     context = {
         "investments": investments,
-        "total_investments": total_investments,
-        "monthly_investments": monthly_investments,
+        "total_investments": format_inr(total_investments),
+        "monthly_investments": format_inr(monthly_investments),
         "currencies": currencies,
     }
     return render(request, "project_investment.html", context)

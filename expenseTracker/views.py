@@ -7,6 +7,20 @@ from django.contrib import messages
 from expenses.models import Expense
 from investment.models import Investment
 
+# Currency conversion
+USD_TO_INR = 83
+EUR_TO_INR = 90
+
+def convert_to_inr(amount, currency):
+    amount = float(amount)
+
+    if currency == "USD":
+        return amount * USD_TO_INR
+    elif currency == "EUR":
+        return amount * EUR_TO_INR
+    else:
+        return amount
+
 # HOME DASHBOARD
 @login_required
 def home(request):
@@ -33,20 +47,20 @@ def home(request):
         for item in expense_distribution
     ]
     # INVESTMENT CHART DATA
-    investment_distribution = (
-        Investment.objects
-        .filter(account=account)
-        .values("investmentName")
-        .annotate(total=Sum("amount"))
-    )
-    investment_labels = [
-        item["investmentName"]
-        for item in investment_distribution
-    ]
-    investment_data = [
-        float(item["total"])
-        for item in investment_distribution
-    ]
+    investments = Investment.objects.filter(account=account)
+
+    investment_chart = {}
+
+    for inv in investments:
+        amount_inr = convert_to_inr(inv.amount, inv.currency)
+
+        if inv.investmentName in investment_chart:
+            investment_chart[inv.investmentName] += amount_inr
+        else:
+            investment_chart[inv.investmentName] = amount_inr
+
+    investment_labels = list(investment_chart.keys())
+    investment_data = list(investment_chart.values())
     # Data sent to the HTML template
     context = {
         "recent_expenses": recent_expenses,
