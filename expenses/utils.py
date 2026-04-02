@@ -1,5 +1,22 @@
 from .models import Account
 
+# Currency conversion rates
+USD_TO_INR = 92.47
+EUR_TO_INR = 106.12
+
+def convert_to_inr(amount, currency):
+    amount = float(amount)
+
+    if currency == "USD":
+        return amount * USD_TO_INR
+    elif currency == "EUR":
+        return amount * EUR_TO_INR
+    else:  # INR
+        return amount
+
+def format_inr(amount):
+    return "{:,.2f}".format(amount)
+
 # FUNCTION: Get the currently active account
 def get_active_account(request):
     account_id = request.session.get("account_id")

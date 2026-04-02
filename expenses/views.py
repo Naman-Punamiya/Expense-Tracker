@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
 from .models import Category, Expense, Account
-
+from .utils import convert_to_inr, format_inr
 
 # FUNCTION: Get the account of the logged-in user
 # If the user doesn't have an account, create one
@@ -67,18 +67,24 @@ def expenses(request):
         except (ValueError, TypeError):
             # Invalid category ID, skip filtering
             pass
-    total_expenses = expense_list.aggregate(
-        total=Sum("amount")
-    )["total"] or 0
+    total_expenses = 0
+
+    for exp in expense_list:
+        total_expenses += convert_to_inr(exp.amount, exp.currency)
     today = now()
-    monthly_expenses = expense_list.filter(
+    monthly_expenses = 0
+
+    monthly_data = expense_list.filter(
         date__year=today.year,
         date__month=today.month
-    ).aggregate(total=Sum("amount"))["total"] or 0
+    )
+
+    for exp in monthly_data:
+        monthly_expenses += convert_to_inr(exp.amount, exp.currency)
     context = {
         "expenses": expense_list,
-        "total_expenses": total_expenses,
-        "monthly_expenses": monthly_expenses,
+        "total_expenses": format_inr(total_expenses),
+        "monthly_expenses": format_inr(monthly_expenses),
         "categories": Category.objects.all(),
     }
     return render(request, "project_expenses.html", context)
